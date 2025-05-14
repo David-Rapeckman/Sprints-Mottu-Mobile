@@ -16,6 +16,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const AppNavigator = () => {
   const { user } = useAuth();
 
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {!user ? (
