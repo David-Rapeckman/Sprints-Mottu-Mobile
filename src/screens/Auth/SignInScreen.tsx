@@ -1,65 +1,92 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Text, Alert, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
+import Input from '../../components/Input';
+import Button from '../../components/Button';
+import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
+import { globalStyles } from '../../styles/global';
+import { useNavigation } from '@react-navigation/native';
 
-const SignInScreen = ({ navigation }: any) => {
-  const { login } = useAuth();
+const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { signIn } = useAuth();
+  const navigation = useNavigation();
 
-  const handleLogin = () => {
-    if (!email || !password) {
-      return Alert.alert('Erro', 'Preencha todos os campos');
+  const handleLogin = async () => {
+    try {
+      if (!email || !password) {
+        Alert.alert('Erro', 'Preencha todos os campos.');
+        return;
+      }
+      await signIn(email, password);
+    } catch (error: any) {
+      Alert.alert('Erro ao entrar', error.message || 'Tente novamente.');
     }
-    login(email, password);
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={[globalStyles.container, styles.container]}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
       <Text style={styles.title}>Manage your parking</Text>
       <Text style={styles.subtitle}>Join Us</Text>
 
-      <TextInput
+      <Input
         placeholder="E-mail"
-        style={styles.input}
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
+        autoCapitalize="none"
       />
 
-      <TextInput
+      <Input
         placeholder="Password"
-        style={styles.input}
-        secureTextEntry
         value={password}
         onChangeText={setPassword}
+        secureTextEntry
       />
 
       <Button title="Create Account" onPress={handleLogin} />
 
-      <Text style={styles.footerText}>
-        Don’t have an account?{' '}
-        <Text style={styles.link} onPress={() => navigation.navigate('SignUp')}>
-          Sign up
-        </Text>
-      </Text>
-    </View>
+      <TouchableOpacity onPress={() => navigation.navigate('SignUp' as never)}>
+        <Text style={styles.linkText}>Don't have an account? <Text style={styles.link}>Sign up</Text></Text>
+      </TouchableOpacity>
+    </KeyboardAvoidingView>
   );
 };
 
-export default SignInScreen;
-
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', textAlign: 'center' },
-  subtitle: { fontSize: 16, textAlign: 'center', marginBottom: 20 },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    marginBottom: 15,
-    padding: 12,
-    borderRadius: 6
+  container: {
+    padding: 20,
+    justifyContent: 'center'
   },
-  footerText: { marginTop: 20, textAlign: 'center' },
-  link: { color: 'blue', textDecorationLine: 'underline' }
+  title: {
+    fontSize: 24,
+    fontFamily: fonts.bold,
+    color: colors.black,
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 16,
+    fontFamily: fonts.regular,
+    color: colors.gray,
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  linkText: {
+    textAlign: 'center',
+    fontSize: 14,
+    color: colors.gray,
+    marginTop: 16,
+  },
+  link: {
+    color: colors.primary,
+    fontFamily: fonts.bold
+  }
 });
+
+export default SignInScreen;

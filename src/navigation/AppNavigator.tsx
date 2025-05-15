@@ -1,21 +1,20 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuth } from '../contexts/AuthContext';
-import { RootStackParamList } from './Types';
 
 import SplashScreen from '../screens/Auth/SplashScreen';
 import SignInScreen from '../screens/Auth/SignInScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import TabNavigator from './TabNavigator';
+
 import Moto1Screen from '../screens/Vehicles/Moto1Screen';
 import Moto2Screen from '../screens/Vehicles/Moto2Screen';
 import Moto3Screen from '../screens/Vehicles/Moto3Screen';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
   const { user } = useAuth();
-
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -36,3 +35,5 @@ const AppNavigator = () => {
     </Stack.Navigator>
   );
 };
+
+export default AppNavigator;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import { RootStackParamList } from '../../navigation/Types';
 
 const Moto2Screen = () => {
   return (

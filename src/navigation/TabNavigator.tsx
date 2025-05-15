@@ -1,45 +1,29 @@
-// src/navigation/TabNavigator.tsx
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
-
 import LocationScreen from '../screens/Home/LocationScreen';
 import VehiclesList from '../screens/Vehicles/VehiclesList';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import SettingsScreen from '../screens/Settings/SettingsScreen';
+import { colors } from '../styles/colors';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      screenOptions={({ route }): BottomTabNavigationOptions => ({
-        headerTitleAlign: 'center',
-        tabBarIcon: ({ color, size }: { color: string; size: number }) => {
-          let iconName: keyof typeof Ionicons.glyphMap;
-
-          switch (route.name) {
-            case 'Location':
-              iconName = 'location';
-              break;
-            case 'Vehicles':
-              iconName = 'bicycle';
-              break;
-            case 'Profile':
-              iconName = 'person';
-              break;
-            case 'Settings':
-              iconName = 'settings';
-              break;
-            default:
-              iconName = 'ellipse';
-          }
-
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => {
+          let iconName: keyof typeof Ionicons.glyphMap = 'ellipse';
+          if (route.name === 'Location') iconName = 'location';
+          else if (route.name === 'Vehicles') iconName = 'bicycle';
+          else if (route.name === 'Profile') iconName = 'person';
+          else if (route.name === 'Settings') iconName = 'settings';
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'green',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.gray,
       })}
     >
       <Tab.Screen name="Location" component={LocationScreen} />
