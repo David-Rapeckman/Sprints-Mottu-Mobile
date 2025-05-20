@@ -1,5 +1,14 @@
+// src/screens/Auth/SignInScreen.tsx
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, Alert, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -12,17 +21,22 @@ const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { signIn } = useAuth();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Erro', 'Preencha todos os campos.');
+      return;
+    }
+
     try {
-      if (!email || !password) {
-        Alert.alert('Erro', 'Preencha todos os campos.');
-        return;
-      }
       await signIn(email, password);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Location' }]
+      });
     } catch (error: any) {
-      Alert.alert('Erro ao entrar', error.message || 'Tente novamente.');
+      Alert.alert('Erro ao entrar', error.message || 'Credenciais inválidas.');
     }
   };
 
@@ -31,8 +45,8 @@ const SignInScreen = () => {
       style={[globalStyles.container, styles.container]}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <Text style={styles.title}>Manage your parking</Text>
-      <Text style={styles.subtitle}>Join Us</Text>
+      <Text style={styles.title}>SysTrack</Text>
+      <Text style={styles.subtitle}>Acesse sua conta</Text>
 
       <Input
         placeholder="E-mail"
@@ -41,32 +55,34 @@ const SignInScreen = () => {
         keyboardType="email-address"
         autoCapitalize="none"
       />
-
       <Input
-        placeholder="Password"
+        placeholder="Senha"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
+      <Button title="Entrar" onPress={handleLogin} />
 
-      <Button title="Create Account" onPress={handleLogin} />
-
-      <TouchableOpacity onPress={() => navigation.navigate('SignUp' as never)}>
-        <Text style={styles.linkText}>Don't have an account? <Text style={styles.link}>Sign up</Text></Text>
+      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+        <Text style={styles.linkText}>
+          Não tem uma conta? <Text style={styles.link}>Cadastre-se</Text>
+        </Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );
 };
 
+export default SignInScreen;
+
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   title: {
     fontSize: 24,
     fontFamily: fonts.bold,
-    color: colors.black,
+    color: colors.primary,
     textAlign: 'center',
     marginBottom: 4,
   },
@@ -85,8 +101,6 @@ const styles = StyleSheet.create({
   },
   link: {
     color: colors.primary,
-    fontFamily: fonts.bold
-  }
+    fontFamily: fonts.bold,
+  },
 });
-
-export default SignInScreen;

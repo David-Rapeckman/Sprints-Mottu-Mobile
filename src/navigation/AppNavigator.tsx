@@ -7,10 +7,6 @@ import SignInScreen from '../screens/Auth/SignInScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import TabNavigator from './TabNavigator';
 
-import Moto1Screen from '../screens/Vehicles/Moto1Screen';
-import Moto2Screen from '../screens/Vehicles/Moto2Screen';
-import Moto3Screen from '../screens/Vehicles/Moto3Screen';
-
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
@@ -25,12 +21,7 @@ const AppNavigator = () => {
           <Stack.Screen name="SignUp" component={SignUpScreen} />
         </>
       ) : (
-        <>
-          <Stack.Screen name="MainApp" component={TabNavigator} />
-          <Stack.Screen name="Moto1Screen" component={Moto1Screen} />
-          <Stack.Screen name="Moto2Screen" component={Moto2Screen} />
-          <Stack.Screen name="Moto3Screen" component={Moto3Screen} />
-        </>
+        <Stack.Screen name="MainApp" component={TabNavigator} />
       )}
     </Stack.Navigator>
   );

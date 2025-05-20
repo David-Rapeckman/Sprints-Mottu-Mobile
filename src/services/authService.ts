@@ -1,164 +1,68 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { User, LoginCredentials, RegisterData, AuthResponse } from '../types/auth';
+import { User } from '../types/auth';
 
-// Chaves de armazenamento
-const STORAGE_KEYS = {
-  USER: '@MedicalApp:user',
-  TOKEN: '@MedicalApp:token',
-  REGISTERED_USERS: '@MedicalApp:registeredUsers',
+const STORAGE = {
+  USERS: '@App:users',
+  USER: '@App:user',
+  TOKEN: '@App:token',
 };
 
-// Médicos mockados que podem fazer login
-const mockDoctors = [
-  {
-    id: '1',
-    name: 'Dr. João Silva',
-    email: 'joao@example.com',
-    role: 'doctor' as const,
-    specialty: 'Cardiologia',
-    image: 'https://randomuser.me/api/portraits/men/1.jpg',
-  },
-  {
-    id: '2',
-    name: 'Dra. Mariana Caetano',
-    email: 'maria@example.com',
-    role: 'doctor' as const,
-    specialty: 'Pediatria',
-    image: 'https://randomuser.me/api/portraits/women/1.jpg',
-  },
-  {
-    id: '3',
-    name: 'Dr. sergio liveira',
-    email: 'pedro@example.com',
-    role: 'doctor' as const,
-    specialty: 'Ortopedia',
-    image: 'https://randomuser.me/api/portraits/men/2.jpg',
-  },
-];
+let registeredUsers: User[] = [];
 
-// Admin mockado
-const mockAdmin = {
+const mockAdmin: User = {
   id: 'admin',
   name: 'Administrador',
   email: 'admin@example.com',
-  role: 'admin' as const,
+  role: 'admin',
   image: 'https://randomuser.me/api/portraits/men/3.jpg',
 };
 
-// Lista de usuários cadastrados (pacientes)
-let registeredUsers: User[] = [];
-
 export const authService = {
-  async signIn(credentials: LoginCredentials): Promise<AuthResponse> {
-    // Verifica se é o admin
-    if (credentials.email === mockAdmin.email && credentials.password === '123456') {
-      return {
-        user: mockAdmin,
-        token: 'admin-token',
-      };
-    }
-
-    // Verifica se é um médico
-    const doctor = mockDoctors.find(
-      (d) => d.email === credentials.email && credentials.password === '123456'
-    );
-    if (doctor) {
-      return {
-        user: doctor,
-        token: `doctor-token-${doctor.id}`,
-      };
-    }
-
-    // Verifica se é um paciente registrado
-    const patient = registeredUsers.find(
-      (p) => p.email === credentials.email
-    );
-    if (patient) {
-      // Para pacientes, a senha padrão é 123456
-      if (credentials.password === '123456') {
-        return {
-          user: patient,
-          token: `patient-token-${patient.id}`,
-        };
-      }
-    }
-
-    throw new Error('Email ou senha inválidos');
+  async loadRegisteredUsers(): Promise<void> {
+    const users = await AsyncStorage.getItem(STORAGE.USERS);
+    registeredUsers = users ? JSON.parse(users) : [];
   },
 
-  async register(data: RegisterData): Promise<AuthResponse> {
-    // Verifica se o email já está em uso
-    if (
-      mockDoctors.some((d) => d.email === data.email) ||
-      mockAdmin.email === data.email ||
-      registeredUsers.some((u) => u.email === data.email)
-    ) {
-      throw new Error('Email já está em uso');
+  async register(name: string, email: string): Promise<User> {
+    if (email === mockAdmin.email || registeredUsers.some((u) => u.email === email)) {
+      throw new Error('Email já cadastrado');
     }
 
-    // Cria um novo paciente
-    const newPatient: User = {
-      id: `patient-${registeredUsers.length + 1}`,
-      name: data.name,
-      email: data.email,
-      role: 'patient' as const,
-      image: `https://randomuser.me/api/portraits/${registeredUsers.length % 2 === 0 ? 'men' : 'women'}/${
-        registeredUsers.length + 1
-      }.jpg`,
+    const newUser: User = {
+      id: `user-${Date.now()}`,
+      name,
+      email,
+      role: 'user',
+      image: 'https://randomuser.me/api/portraits/lego/1.jpg',
     };
 
-    registeredUsers.push(newPatient);
+    registeredUsers.push(newUser);
+    await AsyncStorage.setItem(STORAGE.USERS, JSON.stringify(registeredUsers));
+    return newUser;
+  },
 
-    // Salva a lista atualizada de usuários
-    await AsyncStorage.setItem(STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(registeredUsers));
+  async signIn(email: string, password: string): Promise<{ user: User; token: string }> {
+    if (email === mockAdmin.email && password === '123456') {
+      return { user: mockAdmin, token: 'admin-token' };
+    }
 
-    return {
-      user: newPatient,
-      token: `patient-token-${newPatient.id}`,
-    };
+    const user = registeredUsers.find((u) => u.email === email);
+    if (!user || password !== '123456') throw new Error('Email ou senha inválidos');
+
+    return { user, token: `token-${user.id}` };
   },
 
   async signOut(): Promise<void> {
-    // Limpa os dados do usuário do AsyncStorage
-    await AsyncStorage.removeItem(STORAGE_KEYS.USER);
-    await AsyncStorage.removeItem(STORAGE_KEYS.TOKEN);
+    await AsyncStorage.removeItem(STORAGE.USER);
+    await AsyncStorage.removeItem(STORAGE.TOKEN);
   },
 
   async getStoredUser(): Promise<User | null> {
-    try {
-      const userJson = await AsyncStorage.getItem(STORAGE_KEYS.USER);
-      if (userJson) {
-        return JSON.parse(userJson);
-      }
-      return null;
-    } catch (error) {
-      console.error('Erro ao obter usuário armazenado:', error);
-      return null;
-    }
+    const json = await AsyncStorage.getItem(STORAGE.USER);
+    return json ? JSON.parse(json) : null;
   },
 
-  // Funções para o admin
   async getAllUsers(): Promise<User[]> {
-    return [...mockDoctors, ...registeredUsers];
-  },
-
-  async getAllDoctors(): Promise<User[]> {
-    return mockDoctors;
-  },
-
-  async getPatients(): Promise<User[]> {
-    return registeredUsers;
-  },
-
-  // Função para carregar usuários registrados ao iniciar o app
-  async loadRegisteredUsers(): Promise<void> {
-    try {
-      const usersJson = await AsyncStorage.getItem(STORAGE_KEYS.REGISTERED_USERS);
-      if (usersJson) {
-        registeredUsers = JSON.parse(usersJson);
-      }
-    } catch (error) {
-      console.error('Erro ao carregar usuários registrados:', error);
-    }
+    return [mockAdmin, ...registeredUsers];
   },
 };

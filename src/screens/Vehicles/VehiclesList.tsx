@@ -45,7 +45,7 @@ const VehiclesList = () => {
             status={item.status}
             user={item.user}
             image={item.image}
-            onPress={() => navigation.getParent()?.navigate(item.id)}
+            onPress={() => navigation.navigate({ name: item.id as any, params: undefined })}
           />
         )}
       />

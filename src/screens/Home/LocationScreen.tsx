@@ -16,8 +16,6 @@ const LocationScreen = ({ navigation }: any) => {
   );
 };
 
-export default LocationScreen;
-
 const styles = StyleSheet.create({
   container: { flex: 1 },
   map: { flex: 1, resizeMode: 'cover' },
@@ -31,3 +29,5 @@ const styles = StyleSheet.create({
     borderColor: 'white'
   }
 });
+
+export default LocationScreen;
