@@ -1,20 +1,21 @@
 // src/navigation/AppNavigator.tsx
-import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ProfileScreen from '@screens/Profile/ProfileScreen';
+import VehiclesList from '@screens/Vehicles/VehiclesList';
+import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import SplashScreen from '../screens/Auth/SplashScreen';
 import SignInScreen from '../screens/Auth/SignInScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
-import TabNavigator from './TabNavigator';
+import SplashScreen from '../screens/Auth/SplashScreen';
+import ChangePhotoScreen from '../screens/Profile/ChangePhotoScreen';
+import EditProfileScreen from '../screens/Profile/EditProfileScreen';
+import AboutAppScreen from '../screens/Settings/AboutAppScreen';
+import HelpCenterScreen from '../screens/Settings/HelpCenterScreen';
+import TermsScreen from '../screens/Settings/TermsScreen';
 import Moto1Screen from '../screens/Vehicles/Moto1Screen';
 import Moto2Screen from '../screens/Vehicles/Moto2Screen';
 import Moto3Screen from '../screens/Vehicles/Moto3Screen';
-import VehiclesList from '@screens/Vehicles/VehiclesList';
-import EditProfileScreen from '../screens/Profile/EditProfileScreen';
-import ChangePhotoScreen from '../screens/Profile/ChangePhotoScreen';
-import TermsScreen from '../screens/Settings/TermsScreen';
-import AboutAppScreen from '../screens/Settings/AboutAppScreen';
-import HelpCenterScreen from '../screens/Settings/HelpCenterScreen';
+import TabNavigator from './TabNavigator';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -30,6 +31,7 @@ export type RootStackParamList = {
   TermsScreen: undefined;
   AboutAppScreen: undefined;
   HelpCenterScreen: undefined;
+  ProfileScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -57,7 +59,7 @@ const AppNavigator = () => {
           <Stack.Screen name="TermsScreen" component={TermsScreen} />
           <Stack.Screen name="AboutAppScreen" component={AboutAppScreen} />
           <Stack.Screen name="HelpCenterScreen" component={HelpCenterScreen} />
-
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
         </>
       )}
     </Stack.Navigator>

@@ -7,9 +7,13 @@ export interface User {
   name: string;
   email: string;
   password: string;
+  role: 'admin' | 'user';
   birthdate: string;
-  role: UserRole;
-}
+  phone?: string;
+  gender?: string;
+} 
+
+
 
 export interface LoginCredentials {
   email: string;

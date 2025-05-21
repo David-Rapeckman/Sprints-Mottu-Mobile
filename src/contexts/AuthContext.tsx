@@ -26,6 +26,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         password: 'admin123',
         birthdate: '1990-01-01',
         role: 'admin',
+        phone: '(11) 91234-5678',
+        gender: 'Masculino',
       };
       users.push(admin);
       await AsyncStorage.setItem('@users', JSON.stringify(users));

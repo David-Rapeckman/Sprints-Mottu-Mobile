@@ -12,7 +12,7 @@ const ChangePhotoScreen = ({ navigation }: any) => {
 
   const handleSave = () => {
     Alert.alert('Foto Atualizada', 'A imagem foi alterada (simulada).');
-    navigation.navigate('MainApp'); // volta ao perfil via tab
+    navigation.navigate('ProfileScreen');  // alterado para ProfileScreen
   };
 
   return (
@@ -33,7 +33,23 @@ const ChangePhotoScreen = ({ navigation }: any) => {
 export default ChangePhotoScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 },
-  image: { width: 150, height: 150, borderRadius: 75, marginBottom: 20 },
-  buttons: { width: '100%', gap: 12 }
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#f4f6f8'
+  },
+  image: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: '#4CAF50'
+  },
+  buttons: {
+    width: '100%',
+    gap: 12
+  }
 });

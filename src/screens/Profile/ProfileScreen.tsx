@@ -1,49 +1,65 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
-import Button from '../../components/Button';
-import { colors } from '../../styles/colors';
-import { fonts } from '../../styles/fonts';
-import { globalStyles } from '../../styles/global';
 
 const ProfileScreen = ({ navigation }: any) => {
   const { user, signOut } = useAuth();
 
+  const goToEdit = () => navigation.navigate('EditProfileScreen');
+
   return (
-    <View style={[globalStyles.container, styles.container]}>
-      <Text style={styles.title}>Perfil do Usuário</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Perfil</Text>
 
-      <View style={styles.avatarContainer}>
-        <Image
-          source={require('../../../assets/icon.png')}
-          style={styles.avatar}
-        />
-        <Button
-          title="Alterar Foto"
-          onPress={() => navigation.navigate('ChangePhotoScreen')}
-        />
+      <View style={styles.avatarWrapper}>
+        <Image source={require('../../../assets/icon.png')} style={styles.avatar} />
+        <TouchableOpacity style={styles.editIcon} onPress={() => navigation.navigate('ChangePhotoScreen')}>
+          <Ionicons name="pencil" size={16} color="#fff" />
+        </TouchableOpacity>
       </View>
 
-      <View style={styles.infoBox}>
-        <Text style={styles.label}>Nome:</Text>
-        <Text style={styles.value}>{user?.name}</Text>
+      <Text style={styles.name}>{user?.name || 'Lorem Ipsum'}</Text>
 
-        <Text style={styles.label}>E-mail:</Text>
-        <Text style={styles.value}>{user?.email}</Text>
-
-        <Text style={styles.label}>Data de nascimento:</Text>
-        <Text style={styles.value}>{user?.birthdate || 'Não informado'}</Text>
+      <View style={styles.infoRow}>
+        <Text style={styles.label}>Phone :</Text>
+        <Text style={styles.value}>{user?.phone || '(+44) 20 1234 5689'}</Text>
+        <TouchableOpacity onPress={goToEdit}>
+          <Ionicons name="pencil" size={16} color="#000" style={styles.iconEdit} />
+        </TouchableOpacity>
       </View>
 
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Editar Informações"
-          onPress={() => navigation.navigate('EditProfileScreen')}
-        />
-        <View style={styles.logoutWrapper}>
-          <Button title="Sair" onPress={signOut} />
-        </View>
+      <View style={styles.infoRow}>
+        <Text style={styles.label}>Gender :</Text>
+        <Text style={styles.value}>{user?.gender || 'Homem'}</Text>
+        <TouchableOpacity onPress={goToEdit}>
+          <Ionicons name="pencil" size={16} color="#000" style={styles.iconEdit} />
+        </TouchableOpacity>
       </View>
+
+      <View style={styles.infoRow}>
+        <Text style={styles.label}>Birthday :</Text>
+        <Text style={styles.value}>{user?.birthdate || '12/01/1890'}</Text>
+        <TouchableOpacity onPress={goToEdit}>
+          <Ionicons name="pencil" size={16} color="#000" style={styles.iconEdit} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.infoRow}>
+        <Text style={styles.label}>Email :</Text>
+        <Text style={styles.value}>{user?.email || 'lorem.ipsum@mail.com'}</Text>
+        <TouchableOpacity onPress={goToEdit}>
+          <Ionicons name="pencil" size={16} color="#000" style={styles.iconEdit} />
+        </TouchableOpacity>
+      </View>
+
+      <TouchableOpacity style={styles.editButton} onPress={goToEdit}>
+        <Text style={styles.editButtonText}>Alterar informações</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.logoutButton} onPress={signOut}>
+        <Text style={styles.logoutButtonText}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -52,44 +68,81 @@ export default ProfileScreen;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 20,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
   title: {
-    fontSize: 22,
-    fontFamily: fonts.bold,
+    fontSize: 18,
     textAlign: 'center',
-    color: colors.black,
+    color: '#fff',
+    backgroundColor: '#38B000',
+    paddingVertical: 12,
+    borderRadius: 6,
     marginBottom: 20,
   },
-  avatarContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-    gap: 12,
+  avatarWrapper: {
+    alignSelf: 'center',
+    position: 'relative',
+    marginBottom: 12,
   },
   avatar: {
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: colors.lightGray,
   },
-  infoBox: {
-    marginBottom: 30,
+  editIcon: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#38B000',
+    borderRadius: 12,
+    padding: 6,
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
   },
   label: {
-    fontFamily: fonts.bold,
-    marginTop: 10,
-    color: colors.gray,
+    fontWeight: 'bold',
+    width: 90,
+    fontSize: 14,
   },
   value: {
+    flex: 1,
+    fontSize: 14,
+    color: '#333',
+  },
+  iconEdit: {
+    marginLeft: 8,
+  },
+  editButton: {
+    backgroundColor: '#1E90FF',
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 20,
+  },
+  editButtonText: {
+    color: '#fff',
     fontSize: 16,
-    fontFamily: fonts.regular,
-    color: colors.black,
+    textAlign: 'center',
   },
-  buttonContainer: {
-    gap: 10,
+  logoutButton: {
+    backgroundColor: '#FDECEC',
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 12,
   },
-  logoutWrapper: {
-    marginTop: 8,
+  logoutButtonText: {
+    color: '#E53935',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });

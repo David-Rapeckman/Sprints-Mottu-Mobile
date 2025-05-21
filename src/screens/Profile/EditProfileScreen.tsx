@@ -5,10 +5,12 @@ const EditProfileScreen = ({ navigation }: any) => {
   const [phone, setPhone] = useState('(11) 98765-4321');
   const [gender, setGender] = useState('Masculino');
   const [birthday, setBirthday] = useState('01/01/2000');
+  const [email, setEmail] = useState('');  // Adicionado estado para email
 
   const handleSave = () => {
     Alert.alert('Sucesso', 'Dados atualizados com sucesso!');
-    navigation.navigate('MainApp'); // volta para o TabNavigator onde está Profile
+    navigation.navigate('MainApp', { screen: 'VehiclesList' });
+
   };
 
   return (
@@ -33,6 +35,12 @@ const EditProfileScreen = ({ navigation }: any) => {
         value={birthday}
         onChangeText={setBirthday}
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}   // Corrigido para setEmail
+      />
 
       <Button title="Salvar Alterações" onPress={handleSave} />
     </View>
@@ -42,13 +50,25 @@ const EditProfileScreen = ({ navigation }: any) => {
 export default EditProfileScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, justifyContent: 'center' },
-  title: { fontSize: 22, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
+  container: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'center',
+    backgroundColor: '#f9f9f9'
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#4CAF50'
+  },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 12,
     marginBottom: 15,
-    borderRadius: 6
+    borderRadius: 6,
+    backgroundColor: '#fff'
   }
 });
