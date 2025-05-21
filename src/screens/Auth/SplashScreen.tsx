@@ -1,27 +1,53 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Image } from 'react-native';
+import { View, Text, Button, Image, StyleSheet } from 'react-native';
+import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 const SplashScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
-      <Image source={require('../../../assets/logo.png')} style={styles.logo} />
+      <Image source={require('../../../assets/icon.png')} style={styles.logo} />
+      <Text style={styles.title}>SysTrack</Text>
       <Button title="Entrar" onPress={() => navigation.navigate('SignIn')} />
       <Text style={styles.footerText}>
-        Novo por aqui?{' '}
+        Ainda não tem uma conta?{' '}
         <Text style={styles.link} onPress={() => navigation.navigate('SignUp')}>
-          Cadastrar
+          Cadastre-se
         </Text>
       </Text>
     </View>
   );
 };
 
+export default SplashScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  logo: { width: 200, height: 200, marginBottom: 20 },
-  footerText: { marginTop: 20 },
-  link: { color: 'blue', textDecorationLine: 'underline' },
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  logo: {
+    width: 180,
+    height: 180,
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: fonts.size.title,
+    fontFamily: fonts.bold,
+    color: colors.primary,
+    marginBottom: 24,
+  },
+  footerText: {
+    marginTop: 20,
+    fontFamily: fonts.regular,
+    color: colors.gray,
+    fontSize: fonts.size.medium,
+  },
+  link: {
+    color: colors.primary,
+    fontFamily: fonts.bold,
+  },
 });
-
-export default SplashScreen;

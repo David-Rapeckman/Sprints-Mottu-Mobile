@@ -6,7 +6,7 @@ const TermsScreen = () => {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Termos de Serviço</Text>
       <Text style={styles.text}>
-        Ao utilizar este aplicativo, você concorda com todos os termos e condições aqui descritos...
+        Ao utilizar este aplicativo, você concorda com todos os termos e condições aqui descritos.
       </Text>
       <Text style={styles.text}>
         Este app coleta e trata dados pessoais conforme a política de privacidade.
@@ -24,4 +24,3 @@ const styles = StyleSheet.create({
   title: { fontSize: 22, fontWeight: 'bold', marginBottom: 20 },
   text: { fontSize: 16, marginBottom: 15, lineHeight: 22 }
 });
-    

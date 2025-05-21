@@ -20,10 +20,11 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.primary,
     paddingVertical: 16,
+    paddingHorizontal: metrics.padding,
     alignItems: 'center',
   },
   title: {
-    color: colors.white,
+    color: colors.green,
     fontSize: fonts.size.title,
     fontWeight: 'bold',
   },

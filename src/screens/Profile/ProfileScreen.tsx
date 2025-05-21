@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../components/Button';
 import { colors } from '../../styles/colors';
@@ -13,24 +13,35 @@ const ProfileScreen = ({ navigation }: any) => {
     <View style={[globalStyles.container, styles.container]}>
       <Text style={styles.title}>Perfil do Usuário</Text>
 
+      <View style={styles.avatarContainer}>
+        <Image
+          source={require('../../../assets/icon.png')}
+          style={styles.avatar}
+        />
+        <Button
+          title="Alterar Foto"
+          onPress={() => navigation.navigate('ChangePhotoScreen')}
+        />
+      </View>
+
       <View style={styles.infoBox}>
-        <Text style={styles.label}>Telefone:</Text>
-        <Text style={styles.value}>(11) 98765-4321</Text>
-
-        <Text style={styles.label}>Gênero:</Text>
-        <Text style={styles.value}>Masculino</Text>
-
-        <Text style={styles.label}>Aniversário:</Text>
-        <Text style={styles.value}>01/01/2000</Text>
+        <Text style={styles.label}>Nome:</Text>
+        <Text style={styles.value}>{user?.name}</Text>
 
         <Text style={styles.label}>E-mail:</Text>
         <Text style={styles.value}>{user?.email}</Text>
+
+        <Text style={styles.label}>Data de nascimento:</Text>
+        <Text style={styles.value}>{user?.birthdate || 'Não informado'}</Text>
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title="Alterar Informações" onPress={() => navigation.navigate('EditProfileScreen')} />
+        <Button
+          title="Editar Informações"
+          onPress={() => navigation.navigate('EditProfileScreen')}
+        />
         <View style={styles.logoutWrapper}>
-          <Button title="Logout" onPress={signOut} />
+          <Button title="Sair" onPress={signOut} />
         </View>
       </View>
     </View>
@@ -50,6 +61,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: colors.black,
     marginBottom: 20,
+  },
+  avatarContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+    gap: 12,
+  },
+  avatar: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: colors.lightGray,
   },
   infoBox: {
     marginBottom: 30,

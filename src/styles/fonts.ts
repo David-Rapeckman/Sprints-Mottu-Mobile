@@ -8,3 +8,4 @@ export const fonts = {
       title: 24,
     },
   };
+  

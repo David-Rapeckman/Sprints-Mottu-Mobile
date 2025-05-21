@@ -19,7 +19,7 @@ const MotoCard: React.FC<MotoCardProps> = ({ modelo, status, user, image, onPres
       <View style={styles.info}>
         <Text style={styles.modelo}>{modelo}</Text>
         <Text style={styles.text}>Status: {status}</Text>
-        {user ? <Text style={styles.text}>User: {user}</Text> : null}
+        {user ? <Text style={styles.text}>Usuário: {user}</Text> : null}
       </View>
     </TouchableOpacity>
   );

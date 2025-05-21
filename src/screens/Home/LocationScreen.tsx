@@ -1,33 +1,47 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const LocationScreen = ({ navigation }: any) => {
-  const handleMotoClick = (motoId: string) => {
-    navigation.navigate(motoId); // redireciona para Moto1Screen, Moto2Screen, etc
+  const handleMotoClick = (screenName: string) => {
+    navigation.navigate(screenName);
   };
 
   return (
     <View style={styles.container}>
-      <Image source={require('../../../assets/parking-lot.jpg')} style={styles.map} />
-      <TouchableOpacity style={[styles.marker, { top: 100, left: 120 }]} onPress={() => handleMotoClick('Moto1Screen')} />
-      <TouchableOpacity style={[styles.marker, { top: 180, left: 200 }]} onPress={() => handleMotoClick('Moto2Screen')} />
-      <TouchableOpacity style={[styles.marker, { top: 250, left: 150 }]} onPress={() => handleMotoClick('Moto3Screen')} />
+      <Image
+        source={require('../../../assets/parking-lot.jpg')}
+        style={styles.map}
+      />
+      <TouchableOpacity style={[styles.marker, { top: height * 0.2, left: width * 0.3 }]} onPress={() => handleMotoClick('Moto1Screen')} />
+      <TouchableOpacity style={[styles.marker, { top: height * 0.4, left: width * 0.55 }]} onPress={() => handleMotoClick('Moto2Screen')} />
+      <TouchableOpacity style={[styles.marker, { top: height * 0.6, left: width * 0.4 }]} onPress={() => handleMotoClick('Moto3Screen')} />
     </View>
   );
 };
 
+export default LocationScreen;
+
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  map: { flex: 1, resizeMode: 'cover' },
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
+  map: {
+    width: width,
+    height: height,
+    resizeMode: 'cover',
+    position: 'absolute',
+  },
   marker: {
     position: 'absolute',
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: 'red',
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: 'rgba(255, 0, 0, 0.8)',
     borderWidth: 2,
-    borderColor: 'white'
-  }
+    borderColor: '#fff',
+    elevation: 5,
+  },
 });
-
-export default LocationScreen;

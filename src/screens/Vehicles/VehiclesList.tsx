@@ -2,10 +2,6 @@ import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import MotoCard from '../../components/MotoCard';
 import { useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/Types';
-
-type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
 const motos = [
   {
@@ -32,7 +28,7 @@ const motos = [
 ];
 
 const VehiclesList = () => {
-  const navigation = useNavigation<Navigation>();
+  const navigation = useNavigation<any>();
 
   return (
     <View style={styles.container}>
@@ -45,7 +41,7 @@ const VehiclesList = () => {
             status={item.status}
             user={item.user}
             image={item.image}
-            onPress={() => navigation.navigate({ name: item.id as any, params: undefined })}
+            onPress={() => navigation.navigate(item.id)}
           />
         )}
       />

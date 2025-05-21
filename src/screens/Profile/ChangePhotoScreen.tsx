@@ -13,7 +13,7 @@ const ChangePhotoScreen = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../../../assets/profile-placeholder.png')}
+        source={require('../../../assets/icon.png')}
         style={styles.image}
       />
       <View style={styles.buttons}>

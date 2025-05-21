@@ -5,9 +5,7 @@ const HelpCenterScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Central de Ajuda</Text>
-      <Text style={styles.text}>
-        Precisa de suporte? Aqui estão algumas opções:
-      </Text>
+      <Text style={styles.text}>Precisa de suporte? Aqui estão algumas opções:</Text>
       <Text style={styles.item}>• suporte@systrack.com</Text>
       <Text style={styles.item}>• WhatsApp: (11) 99999-9999</Text>
       <Text style={styles.item}>• FAQ disponível em nosso site oficial</Text>

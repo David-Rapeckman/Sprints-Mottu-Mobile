@@ -4,10 +4,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 const Moto1Screen = () => {
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: 'https://via.placeholder.com/200x150' }}
-        style={styles.image}
-      />
+      <Image source={{ uri: 'https://via.placeholder.com/200x150' }} style={styles.image} />
       <View style={styles.info}>
         <Text style={styles.label}>Modelo:</Text>
         <Text style={styles.value}>KYY-123456</Text>
@@ -35,5 +32,5 @@ const styles = StyleSheet.create({
   image: { width: 200, height: 150, borderRadius: 10, marginBottom: 20 },
   info: { width: '100%' },
   label: { fontWeight: 'bold', fontSize: 16, marginTop: 12 },
-  value: { fontSize: 16, color: '#555' }
+  value: { fontSize: 16, color: '#555' },
 });
