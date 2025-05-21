@@ -1,13 +1,18 @@
 import React from 'react';
-import { View, Text, Image, Button, StyleSheet } from 'react-native';
+import { View, Text, Image, Button, StyleSheet, Alert } from 'react-native';
 
-const ChangePhotoScreen = () => {
+const ChangePhotoScreen = ({ navigation }: any) => {
   const handleSelectGallery = () => {
     alert('Selecionar da galeria (não implementado)');
   };
 
   const handleTakePhoto = () => {
     alert('Abrir câmera (não implementado)');
+  };
+
+  const handleSave = () => {
+    Alert.alert('Foto Atualizada', 'A imagem foi alterada (simulada).');
+    navigation.navigate('MainApp'); // volta ao perfil via tab
   };
 
   return (
@@ -19,6 +24,7 @@ const ChangePhotoScreen = () => {
       <View style={styles.buttons}>
         <Button title="Selecionar da Galeria" onPress={handleSelectGallery} />
         <Button title="Tirar Foto Agora" onPress={handleTakePhoto} />
+        <Button title="Salvar e Voltar" onPress={handleSave} />
       </View>
     </View>
   );

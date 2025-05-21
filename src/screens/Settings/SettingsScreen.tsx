@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, Switch, Button, StyleSheet } from 'react-native';
+import { View, Text, Switch, Button, StyleSheet, Alert } from 'react-native';
 
 const SettingsScreen = ({ navigation }: any) => {
   const [darkMode, setDarkMode] = useState(false);
   const [muted, setMuted] = useState(false);
   const [customNotifications, setCustomNotifications] = useState(true);
+
+  const handleSave = () => {
+    Alert.alert('Sucesso', 'Configurações salvas com sucesso!');
+    navigation.navigate('MainApp'); // ou 'ProfileScreen' se preferir
+  };
 
   return (
     <View style={styles.container}>
@@ -35,6 +40,10 @@ const SettingsScreen = ({ navigation }: any) => {
         <Button title="Sobre o App" onPress={() => navigation.navigate('AboutAppScreen')} />
         <Button title="Central de Ajuda" onPress={() => navigation.navigate('HelpCenterScreen')} />
       </View>
+
+      <View style={styles.saveButton}>
+        <Button title="Salvar Alterações" onPress={handleSave} />
+      </View>
     </View>
   );
 };
@@ -53,5 +62,8 @@ const styles = StyleSheet.create({
   links: {
     marginTop: 30,
     gap: 10
+  },
+  saveButton: {
+    marginTop: 30
   }
 });

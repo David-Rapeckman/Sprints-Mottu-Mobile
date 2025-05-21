@@ -8,7 +8,7 @@ const EditProfileScreen = ({ navigation }: any) => {
 
   const handleSave = () => {
     Alert.alert('Sucesso', 'Dados atualizados com sucesso!');
-    navigation.goBack();
+    navigation.navigate('MainApp'); // volta para o TabNavigator onde está Profile
   };
 
   return (
