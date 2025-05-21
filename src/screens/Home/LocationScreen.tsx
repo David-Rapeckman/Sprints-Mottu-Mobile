@@ -14,9 +14,9 @@ const LocationScreen = ({ navigation }: any) => {
         source={require('../../../assets/parking-lot.jpg')}
         style={styles.map}
       />
-      <TouchableOpacity style={[styles.marker, { top: height * 0.2, left: width * 0.3 }]} onPress={() => handleMotoClick('Moto1Screen')} />
-      <TouchableOpacity style={[styles.marker, { top: height * 0.4, left: width * 0.55 }]} onPress={() => handleMotoClick('Moto2Screen')} />
-      <TouchableOpacity style={[styles.marker, { top: height * 0.6, left: width * 0.4 }]} onPress={() => handleMotoClick('Moto3Screen')} />
+      <TouchableOpacity style={[styles.marker, { top: height * 0.3, left: width * 0.2}]} onPress={() => handleMotoClick('Moto1Screen')} />
+      <TouchableOpacity style={[styles.marker, { top: height * 0.3, left: width * 0.8 }]} onPress={() => handleMotoClick('Moto2Screen')} />
+      <TouchableOpacity style={[styles.marker, { top: height * 0.5, left: width * 0.7 }]} onPress={() => handleMotoClick('Moto3Screen')} />
     </View>
   );
 };
