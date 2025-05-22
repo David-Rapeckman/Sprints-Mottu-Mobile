@@ -5,7 +5,6 @@ import {
   Switch,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   Modal,
   Pressable,
   SafeAreaView,
@@ -15,12 +14,14 @@ const SettingsScreen = ({ navigation }: any) => {
   const [darkMode, setDarkMode] = useState(false);
   const [muted, setMuted] = useState(false);
   const [customNotifications, setCustomNotifications] = useState(true);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [languageModalVisible, setLanguageModalVisible] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('Português');
+  const [infoModalVisible, setInfoModalVisible] = useState(false);
+  const [infoMessage, setInfoMessage] = useState('');
 
-  const handleSave = () => {
-    Alert.alert('Sucesso', 'Configurações salvas com sucesso!');
-    navigation.navigate('ProfileScreen');
+  const handleDarkToggle = () => {
+    setInfoMessage('O modo escuro está sendo implementado.');
+    setInfoModalVisible(true);
   };
 
   const renderLink = (title: string, screen: string) => (
@@ -34,8 +35,7 @@ const SettingsScreen = ({ navigation }: any) => {
 
   const selectLanguage = (language: string) => {
     setSelectedLanguage(language);
-    setModalVisible(false);
-    Alert.alert('Idioma selecionado', `Você selecionou: ${language}`);
+    setLanguageModalVisible(false);
   };
 
   return (
@@ -45,13 +45,11 @@ const SettingsScreen = ({ navigation }: any) => {
       </View>
 
       <View style={styles.container}>
-        <Text style={styles.title}></Text>
-
         <View style={styles.settingItem}>
           <Text style={styles.label}>Linguagem:</Text>
           <TouchableOpacity
             style={styles.selectButton}
-            onPress={() => setModalVisible(true)}
+            onPress={() => setLanguageModalVisible(true)}
           >
             <Text style={styles.selectButtonText}>{selectedLanguage}</Text>
           </TouchableOpacity>
@@ -59,7 +57,7 @@ const SettingsScreen = ({ navigation }: any) => {
 
         <View style={styles.settingItem}>
           <Text style={styles.label}>Modo escuro:</Text>
-          <Switch value={darkMode} onValueChange={setDarkMode} />
+          <Switch value={darkMode} onValueChange={handleDarkToggle} />
         </View>
 
         <View style={styles.settingItem}>
@@ -69,7 +67,10 @@ const SettingsScreen = ({ navigation }: any) => {
 
         <View style={styles.settingItem}>
           <Text style={styles.label}>Notificações personalizadas:</Text>
-          <Switch value={customNotifications} onValueChange={setCustomNotifications} />
+          <Switch
+            value={customNotifications}
+            onValueChange={setCustomNotifications}
+          />
         </View>
 
         <View style={styles.linksContainer}>
@@ -77,37 +78,61 @@ const SettingsScreen = ({ navigation }: any) => {
           {renderLink('Sobre o App', 'AboutAppScreen')}
           {renderLink('Central de Ajuda', 'HelpCenterScreen')}
         </View>
-
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Selecione o idioma</Text>
-
-              {['Português', 'Inglês', 'Espanhol', 'Francês'].map((lang) => (
-                <Pressable
-                  key={lang}
-                  style={styles.modalOption}
-                  onPress={() => selectLanguage(lang)}
-                >
-                  <Text style={styles.modalOptionText}>{lang}</Text>
-                </Pressable>
-              ))}
-
-              <Pressable
-                style={[styles.modalOption, styles.modalCancel]}
-                onPress={() => setModalVisible(false)}
-              >
-                <Text style={[styles.modalOptionText, { color: 'red' }]}>Cancelar</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
       </View>
+
+      {/* Language Selection Modal */}
+      <Modal
+        animationType="slide"
+        transparent
+        visible={languageModalVisible}
+        onRequestClose={() => setLanguageModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Selecione o idioma</Text>
+            {['Português', 'Inglês', 'Espanhol', 'Francês'].map((lang) => (
+              <Pressable
+                key={lang}
+                style={styles.modalOption}
+                onPress={() => selectLanguage(lang)}
+              >
+                <Text style={styles.modalOptionText}>{lang}</Text>
+              </Pressable>
+            ))}
+            <Pressable
+              style={[styles.modalOption, styles.modalCancel]}
+              onPress={() => setLanguageModalVisible(false)}
+            >
+              <Text style={[styles.modalOptionText, { color: 'red' }]}>
+                Cancelar
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Info Modal (for dark mode) */}
+      <Modal
+        animationType="fade"
+        transparent
+        visible={infoModalVisible}
+        onRequestClose={() => setInfoModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={[styles.modalTitle, { color: '#333' }]}>Aviso</Text>
+            <Text style={styles.modalOptionText}>{infoMessage}</Text>
+            <Pressable
+              style={[styles.modalOption, styles.modalCancel]}
+              onPress={() => setInfoModalVisible(false)}
+            >
+              <Text style={[styles.modalOptionText, { color: 'red' }]}>
+                Fechar
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -117,7 +142,6 @@ export default SettingsScreen;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    width: '100%',
     backgroundColor: '#fff',
     paddingTop: 100,
   },
@@ -139,13 +163,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 28,
-    color: '#28A745',
-    textAlign: 'center',
+    paddingTop: 20,
   },
   settingItem: {
     flexDirection: 'row',
@@ -176,7 +194,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   linksContainer: {
-    marginTop: 0,
+    marginTop: 24,
   },
   linkButton: {
     paddingVertical: 12,

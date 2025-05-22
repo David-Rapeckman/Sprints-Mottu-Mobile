@@ -1,12 +1,47 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = ({ navigation }: any) => {
   const { user, signOut } = useAuth();
-
   const goToEdit = () => navigation.navigate('EditProfileScreen');
+
+  const [storedPhone, setStoredPhone] = useState('');
+  const [storedGender, setStoredGender] = useState('');
+  const [storedBirthday, setStoredBirthday] = useState('');
+  const [storedEmail, setStoredEmail] = useState('');
+
+  useEffect(() => {
+    const loadData = async () => {
+      const phone = await AsyncStorage.getItem('profile_phone');
+      const gender = await AsyncStorage.getItem('profile_gender');
+      const birthday = await AsyncStorage.getItem('profile_birthdate');
+      const email = await AsyncStorage.getItem('profile_email');
+
+      if (phone) setStoredPhone(phone);
+      if (gender) setStoredGender(gender);
+      if (birthday) {
+        const date = new Date(birthday);
+        const formatted = `${String(date.getDate()).padStart(2, '0')}/` +
+                          `${String(date.getMonth() + 1).padStart(2, '0')}/` +
+                          `${date.getFullYear()}`;
+        setStoredBirthday(formatted);
+      }
+      if (email) setStoredEmail(email);
+    };
+
+    const unsubscribe = navigation.addListener('focus', loadData);
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -15,7 +50,10 @@ const ProfileScreen = ({ navigation }: any) => {
       </View>
 
       <View style={styles.avatarWrapper}>
-        <Image source={require('../../../assets/icon.png')} style={styles.avatar} />
+        <Image
+          source={require('../../../assets/icon.png')}
+          style={styles.avatar}
+        />
         <TouchableOpacity
           style={styles.editIcon}
           onPress={() => navigation.navigate('ChangePhotoScreen')}
@@ -28,7 +66,7 @@ const ProfileScreen = ({ navigation }: any) => {
 
       <View style={styles.infoRow}>
         <Text style={styles.label}>Phone :</Text>
-        <Text style={styles.value}>{user?.phone || '(+44) 20 1234 5689'}</Text>
+        <Text style={styles.value}>{storedPhone || user?.phone || '(+44) 20 1234 5689'}</Text>
         <TouchableOpacity onPress={goToEdit}>
           <Ionicons name="pencil" size={16} color="#000" style={styles.iconEdit} />
         </TouchableOpacity>
@@ -36,7 +74,7 @@ const ProfileScreen = ({ navigation }: any) => {
 
       <View style={styles.infoRow}>
         <Text style={styles.label}>Gender :</Text>
-        <Text style={styles.value}>{user?.gender || 'Homem'}</Text>
+        <Text style={styles.value}>{storedGender || user?.gender || 'Homem'}</Text>
         <TouchableOpacity onPress={goToEdit}>
           <Ionicons name="pencil" size={16} color="#000" style={styles.iconEdit} />
         </TouchableOpacity>
@@ -44,7 +82,7 @@ const ProfileScreen = ({ navigation }: any) => {
 
       <View style={styles.infoRow}>
         <Text style={styles.label}>Birthday :</Text>
-        <Text style={styles.value}>{user?.birthdate || '1990-01-01'}</Text>
+        <Text style={styles.value}>{storedBirthday || user?.birthdate || '01/01/1990'}</Text>
         <TouchableOpacity onPress={goToEdit}>
           <Ionicons name="pencil" size={16} color="#000" style={styles.iconEdit} />
         </TouchableOpacity>
@@ -52,7 +90,7 @@ const ProfileScreen = ({ navigation }: any) => {
 
       <View style={styles.infoRow}>
         <Text style={styles.label}>Email :</Text>
-        <Text style={styles.value}>{user?.email || 'admin@gmail.com'}</Text>
+        <Text style={styles.value}>{storedEmail || user?.email || 'admin@gmail.com'}</Text>
         <TouchableOpacity onPress={goToEdit}>
           <Ionicons name="pencil" size={16} color="#000" style={styles.iconEdit} />
         </TouchableOpacity>
