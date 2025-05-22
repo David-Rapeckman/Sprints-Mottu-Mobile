@@ -7,7 +7,7 @@ const Moto1Screen = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: 'https://via.placeholder.com/200x150' }} style={styles.image} />
+      <Image source={{ uri: 'assets/Moto1.png' }} style={styles.image} />
       <View style={styles.info}>
         <Text style={styles.label}>Modelo:</Text>
         <Text style={styles.value}>KYY-123456</Text>
@@ -24,13 +24,6 @@ const Moto1Screen = () => {
         <Text style={styles.label}>Manutenção:</Text>
         <Text style={styles.value}>OK</Text>
       </View>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('MainApp')} // Retorna para o TabNavigator
-      >
-        <Text style={styles.buttonText}>Voltar para Lista</Text>
-      </TouchableOpacity>
     </View>
   );
 };

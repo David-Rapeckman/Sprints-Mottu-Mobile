@@ -1,14 +1,22 @@
 import React from 'react';
-import { View, Text, Button, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { colors } from '../../styles/colors';
 import { fonts } from '../../styles/fonts';
 
 const SplashScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
-      <Image source={require('../../../assets/icon.png')} style={styles.logo} />
+      <Image source={require('../../../assets/logo.png')} style={styles.logo} />
       <Text style={styles.title}>SysTrack</Text>
-      <Button title="Entrar" onPress={() => navigation.navigate('SignIn')} />
+
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('SignIn')}
+      >
+        <Text style={styles.buttonText}>Entrar</Text>
+      </TouchableOpacity>
+
       <Text style={styles.footerText}>
         Ainda não tem uma conta?{' '}
         <Text style={styles.link} onPress={() => navigation.navigate('SignUp')}>
@@ -27,27 +35,48 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 24,
+    paddingHorizontal: 30,
   },
   logo: {
     width: 180,
     height: 180,
-    marginBottom: 20,
+    marginBottom: 32,
+    resizeMode: 'contain',
+    borderRadius: 100, 
   },
   title: {
-    fontSize: fonts.size.title,
+    fontSize: fonts.size.title + 8,
     fontFamily: fonts.bold,
     color: colors.primary,
+    marginBottom: 48,
+    letterSpacing: 2,
+  },
+  button: {
+    backgroundColor: colors.primary,
+    width: '70%',
+    paddingVertical: 15,
+    borderRadius: 30,
     marginBottom: 24,
+    elevation: 3, // sombra para Android
+    shadowColor: '#000', // sombra para iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontFamily: fonts.bold,
+    fontSize: fonts.size.medium + 2,
   },
   footerText: {
-    marginTop: 20,
     fontFamily: fonts.regular,
     color: colors.gray,
-    fontSize: fonts.size.medium,
+    fontSize: fonts.size.small,  
   },
   link: {
     color: colors.primary,
     fontFamily: fonts.bold,
+    textDecorationLine: 'underline',
   },
 });

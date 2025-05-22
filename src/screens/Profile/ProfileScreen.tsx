@@ -14,7 +14,10 @@ const ProfileScreen = ({ navigation }: any) => {
 
       <View style={styles.avatarWrapper}>
         <Image source={require('../../../assets/icon.png')} style={styles.avatar} />
-        <TouchableOpacity style={styles.editIcon} onPress={() => navigation.navigate('ChangePhotoScreen')}>
+        <TouchableOpacity
+          style={styles.editIcon}
+          onPress={() => navigation.navigate('ChangePhotoScreen')}
+        >
           <Ionicons name="pencil" size={16} color="#fff" />
         </TouchableOpacity>
       </View>
@@ -69,41 +72,43 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    marginTop: 0,
     backgroundColor: '#fff',
+    paddingHorizontal: 24,
+    paddingTop: 40,
   },
   title: {
-    fontSize: 18,
+    fontSize: 22,
+    fontWeight: '700',
     textAlign: 'center',
-    color: '#fff',
-    backgroundColor: '#38B000',
-    paddingVertical: 12,
-    borderRadius: 6,
-    marginBottom: 20,
+    color: '#28A745',
+    marginBottom: 30,
   },
   avatarWrapper: {
     alignSelf: 'center',
     position: 'relative',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   avatar: {
     width: 120,
     height: 120,
     borderRadius: 60,
+    backgroundColor: '#eaeaea',
   },
   editIcon: {
     position: 'absolute',
     right: 0,
     bottom: 0,
-    backgroundColor: '#38B000',
+    backgroundColor: '#54B12C',
     borderRadius: 12,
     padding: 6,
   },
   name: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '600',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
+    color: '#333',
   },
   infoRow: {
     flexDirection: 'row',
@@ -113,36 +118,39 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
     width: 90,
-    fontSize: 14,
+    fontSize: 15,
+    color: '#555',
   },
   value: {
     flex: 1,
-    fontSize: 14,
-    color: '#333',
+    fontSize: 15,
+    color: '#222',
   },
   iconEdit: {
     marginLeft: 8,
   },
   editButton: {
     backgroundColor: '#1E90FF',
-    paddingVertical: 12,
+    paddingVertical: 14,
     borderRadius: 8,
-    marginTop: 20,
+    marginTop: 30,
   },
   editButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 17,
+    fontWeight: '600',
     textAlign: 'center',
   },
   logoutButton: {
     backgroundColor: '#FDECEC',
-    paddingVertical: 12,
+    paddingVertical: 14,
     borderRadius: 8,
-    marginTop: 12,
+    marginTop: 16,
   },
   logoutButtonText: {
     color: '#E53935',
-    fontSize: 16,
+    fontSize: 17,
+    fontWeight: '600',
     textAlign: 'center',
   },
 });
