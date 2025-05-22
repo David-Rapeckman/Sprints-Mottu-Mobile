@@ -12,11 +12,14 @@ const ChangePhotoScreen = ({ navigation }: any) => {
 
   const handleSave = () => {
     Alert.alert('Foto Atualizada', 'A imagem foi alterada (simulada).');
-    navigation.navigate('ProfileScreen');  // alterado para ProfileScreen
+    navigation.navigate('ProfileScreen');
   };
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Change Photo</Text>
+      </View>
       <Image
         source={require('../../../assets/icon.png')}
         style={styles.image}
@@ -38,7 +41,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#f4f6f8'
+    backgroundColor: '#f4f6f8',
+  },
+  header: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: 79,
+    backgroundColor: 'rgba(40, 167, 69, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  headerText: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: '700',
   },
   image: {
     width: 150,
@@ -46,10 +64,11 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     marginBottom: 20,
     borderWidth: 2,
-    borderColor: '#4CAF50'
+    borderColor: '#4CAF50',
+    marginTop: 80,
   },
   buttons: {
     width: '100%',
-    gap: 12
-  }
+    gap: 12,
+  },
 });

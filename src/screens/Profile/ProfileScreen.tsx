@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -9,8 +9,10 @@ const ProfileScreen = ({ navigation }: any) => {
   const goToEdit = () => navigation.navigate('EditProfileScreen');
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Perfil</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Profile</Text>
+      </View>
 
       <View style={styles.avatarWrapper}>
         <Image source={require('../../../assets/icon.png')} style={styles.avatar} />
@@ -22,7 +24,7 @@ const ProfileScreen = ({ navigation }: any) => {
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.name}>{user?.name || 'Lorem Ipsum'}</Text>
+      <Text style={styles.name}>{user?.name || 'Administrador'}</Text>
 
       <View style={styles.infoRow}>
         <Text style={styles.label}>Phone :</Text>
@@ -42,7 +44,7 @@ const ProfileScreen = ({ navigation }: any) => {
 
       <View style={styles.infoRow}>
         <Text style={styles.label}>Birthday :</Text>
-        <Text style={styles.value}>{user?.birthdate || '12/01/1890'}</Text>
+        <Text style={styles.value}>{user?.birthdate || '1990-01-01'}</Text>
         <TouchableOpacity onPress={goToEdit}>
           <Ionicons name="pencil" size={16} color="#000" style={styles.iconEdit} />
         </TouchableOpacity>
@@ -50,7 +52,7 @@ const ProfileScreen = ({ navigation }: any) => {
 
       <View style={styles.infoRow}>
         <Text style={styles.label}>Email :</Text>
-        <Text style={styles.value}>{user?.email || 'lorem.ipsum@mail.com'}</Text>
+        <Text style={styles.value}>{user?.email || 'admin@gmail.com'}</Text>
         <TouchableOpacity onPress={goToEdit}>
           <Ionicons name="pencil" size={16} color="#000" style={styles.iconEdit} />
         </TouchableOpacity>
@@ -63,29 +65,37 @@ const ProfileScreen = ({ navigation }: any) => {
       <TouchableOpacity style={styles.logoutButton} onPress={signOut}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    marginTop: 0,
+    width: '100%',
     backgroundColor: '#fff',
-    paddingHorizontal: 24,
-    paddingTop: 40,
+    alignItems: 'center',
+    paddingTop: 100,
   },
-  title: {
+  header: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: 79,
+    backgroundColor: 'rgba(40, 167, 69, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  headerText: {
+    color: '#fff',
     fontSize: 22,
     fontWeight: '700',
-    textAlign: 'center',
-    color: '#28A745',
-    marginBottom: 30,
   },
   avatarWrapper: {
-    alignSelf: 'center',
+    alignItems: 'center',
     position: 'relative',
     marginBottom: 16,
   },
@@ -114,6 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
+    width: '90%',
   },
   label: {
     fontWeight: 'bold',
@@ -134,6 +145,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 8,
     marginTop: 30,
+    width: '90%',
   },
   editButtonText: {
     color: '#fff',
@@ -146,6 +158,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 8,
     marginTop: 16,
+    width: '90%',
   },
   logoutButtonText: {
     color: '#E53935',

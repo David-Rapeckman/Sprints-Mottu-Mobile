@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, Dimensions, Text } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, Dimensions, Text, SafeAreaView } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -9,8 +9,7 @@ const LocationScreen = ({ navigation }: any) => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Cabeçalho fixo no topo */}
+    <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Location</Text>
       </View>
@@ -19,6 +18,7 @@ const LocationScreen = ({ navigation }: any) => {
         source={require('../../../assets/parking-lot.jpg')}
         style={styles.map}
       />
+
       <TouchableOpacity
         style={[styles.marker, { top: height * 0.28, left: width * 0.20 }]}
         onPress={() => handleMotoClick('Moto1Screen')}
@@ -34,14 +34,14 @@ const LocationScreen = ({ navigation }: any) => {
         onPress={() => handleMotoClick('Moto3Screen')}
         activeOpacity={0.7}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default LocationScreen;
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: '#000',
   },
@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: '100%',
-    height: 56,
-    backgroundColor: 'rgba(40, 167, 69, 0.7)', // verde #28A745 com 70% de opacidade
+    height: 79,
+    backgroundColor: 'rgba(40, 167, 69, 0.7)',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,

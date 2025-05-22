@@ -8,14 +8,14 @@ interface MotoCardProps {
   modelo: string;
   status: string;
   user: string;
-  image: string;
+  image: any; // Aceita require(...)
   onPress: () => void;
 }
 
 const MotoCard: React.FC<MotoCardProps> = ({ modelo, status, user, image, onPress }) => {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
-      <Image source={{ uri: image }} style={styles.image} />
+      <Image source={image} style={styles.image} />
       <View style={styles.info}>
         <Text style={styles.modelo}>{modelo}</Text>
         <Text style={styles.text}>Status: {status}</Text>
@@ -24,6 +24,8 @@ const MotoCard: React.FC<MotoCardProps> = ({ modelo, status, user, image, onPres
     </TouchableOpacity>
   );
 };
+
+export default MotoCard;
 
 const styles = StyleSheet.create({
   card: {
@@ -59,5 +61,3 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 });
-
-export default MotoCard;

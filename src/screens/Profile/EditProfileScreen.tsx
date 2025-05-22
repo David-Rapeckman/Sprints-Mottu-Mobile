@@ -5,17 +5,18 @@ const EditProfileScreen = ({ navigation }: any) => {
   const [phone, setPhone] = useState('(11) 98765-4321');
   const [gender, setGender] = useState('Masculino');
   const [birthday, setBirthday] = useState('01/01/2000');
-  const [email, setEmail] = useState('');  // Adicionado estado para email
+  const [email, setEmail] = useState('');
 
   const handleSave = () => {
     Alert.alert('Sucesso', 'Dados atualizados com sucesso!');
     navigation.navigate('MainApp', { screen: 'VehiclesList' });
-
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Editar Perfil</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Edit Profile</Text>
+      </View>
 
       <TextInput
         style={styles.input}
@@ -39,7 +40,7 @@ const EditProfileScreen = ({ navigation }: any) => {
         style={styles.input}
         placeholder="Email"
         value={email}
-        onChangeText={setEmail}   // Corrigido para setEmail
+        onChangeText={setEmail}
       />
 
       <Button title="Salvar Alterações" onPress={handleSave} />
@@ -52,16 +53,24 @@ export default EditProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f9f9f9'
+    padding: 20,
+    backgroundColor: '#f4f6f8',
   },
-  title: {
+  header: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: 79,
+    backgroundColor: 'rgba(40, 167, 69, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerText: {
+    color: '#fff',
     fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-    color: '#4CAF50'
+    fontWeight: '700',
   },
   input: {
     borderWidth: 1,
@@ -69,6 +78,6 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 15,
     borderRadius: 6,
-    backgroundColor: '#fff'
-  }
+    backgroundColor: '#fff',
+  },
 });
