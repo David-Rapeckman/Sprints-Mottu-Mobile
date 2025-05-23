@@ -1,6 +1,26 @@
-# SysTrack
+# **SysTrack: Monitoramento em Tempo Real de Motos**
 
-**SysTrack** é um aplicativo mobile desenvolvido com **React Native + TypeScript** para o monitoramento em tempo real de **motos em pátios**, oferecendo uma visualização interativa, login seguro, e um sistema de navegação fluido para gestão e consulta dos veículos.
+## Nossa Equipe
+
+- **Gustavo Rangel**  
+  💼 Estudante de Análise e Desenvolvimento de Sistemas na FIAP  
+  🔗 [linkedin.com/in/gustavoorangel](https://linkedin.com/in/gustavoorangel)
+
+- **David Rapeckman**  
+  💼 Estudante de Análise e Desenvolvimento de Sistemas na FIAP  
+  🔗 [linkedin.com/in/davidrapeckman](https://linkedin.com/in/davidrapeckman)
+
+- **Luis Felippe Morais**  
+  💼 Estudante de Análise e Desenvolvimento de Sistemas na FIAP  
+  🔗 [linkedin.com/in/luis-felippe-morais-das-neves-16219b2b9](https://linkedin.com/in/luis-felippe-morais-das-neves-16219b2b9)
+
+---
+
+## Descrição
+
+O **SysTrack** é um aplicativo mobile desenvolvido com **React Native** e **TypeScript**, voltado para o monitoramento e gestão em tempo real de motos em pátios. Ele oferece uma visualização interativa, sistema de login seguro e uma navegação fluida para facilitar a consulta e gestão dos veículos. O aplicativo foi projetado para proporcionar uma experiência otimizada, com telas intuitivas para usuários e administradores.
+
+---
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -33,35 +53,26 @@
 
 ---
 
-## 🔐 Usuários Padrão
-
-| Email                | Senha      | Papel |
-|----------------------|------------|--------|
-| admin@gmail.com      | admin123   | admin  |
-| joao@example.com     | 123456     | user   |
-
----
-
 ## 🧩 Estrutura do Projeto
 
-```bash
+```plaintext
 src/
-├── assets/                   # Imagens estáticas
-├── components/               # Button, Input, Header, MotoCard
-├── contexts/
-│   └── AuthContext.tsx       # Contexto de autenticação
+├── assets/                    # Imagens estáticas
+├── components/                # Componentes reutilizáveis (Button, Input, Header, MotoCard)
+├── contexts/ 
+│   └── AuthContext.tsx        # Contexto de autenticação
 ├── navigation/
-│   ├── AppNavigator.tsx      # Stack Navigator + Auth logic
-│   ├── TabNavigator.tsx      # Navegação por abas
-│   └── Types.ts              # Tipagem de rotas
+│   ├── AppNavigator.tsx       # Stack Navigator + Lógica de Autenticação
+│   ├── TabNavigator.tsx       # Navegação por abas para o menu inferior
+│   └── Types.ts               # Tipagem de rotas
 ├── screens/
-│   ├── Auth/                 # Splash, SignIn, SignUp
-│   ├── Home/                 # LocationScreen
-│   ├── Vehicles/             # VehiclesList, Moto1, Moto2, Moto3
-│   ├── Profile/              # Profile, Edit, Foto
-│   └── Settings/             # Configurações, Ajuda, Termos, Sobre
+│   ├── Auth/                  # Telas: Splash, SignIn, SignUp
+│   ├── Home/                  # LocationScreen
+│   ├── Vehicles/              # Telas: VehiclesList, Moto1, Moto2, Moto3
+│   ├── Profile/               # Telas: Profile, Edit, Foto
+│   └── Settings/              # Telas: Configurações, Ajuda, Termos, Sobre
 ├── services/
-│   └── authService.ts        # Serviço de autenticação (mock)
+│   └── authService.ts         # Serviço de autenticação (mock)
 ├── styles/
 │   ├── colors.ts
 │   ├── fonts.ts
