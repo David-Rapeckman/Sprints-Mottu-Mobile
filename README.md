@@ -99,19 +99,22 @@ Siga as instruções abaixo para rodar o projeto em seu ambiente local:
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com//SysTrack.git
+   git clone [https://github.com//SysTrack.git](https://github.com/David-Rapeckman/Sprints-Mottu-Mobile/)
 
 
 Navegue até a pasta do projeto:
-cd SysTrack
-
+   ```bash
+   cd SysTrack
+   ```
 Instale as dependências:
-npm install
+   ```bash
+  npm install
+   ```
 
-
-Inicie o servidor do Expo:
-npm start
-
+Inicie o servidor:
+   ```bash
+  npm start
+   ```
 
 O Expo CLI abrirá uma nova janela no navegador com o código QR. Você pode escanear o código QR com o aplicativo Expo Go no seu dispositivo ou usar o emulador.
 
