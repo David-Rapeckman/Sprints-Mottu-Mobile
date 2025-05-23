@@ -3,18 +3,18 @@
 ## Nossa Equipe
 
 - **Gustavo Rangel**  RM559168
-Gustavo Rangel de lima Siqueira
-  💼 Estudante de Análise e Desenvolvimento de Sistemas na FIAP  
+- Gustavo Rangel de lima Siqueira
+  - 💼 Estudante de Análise e Desenvolvimento de Sistemas na FIAP  
   🔗 [linkedin.com/in/gustavoorangel](https://linkedin.com/in/gustavoorangel)
 
 - **David Rapeckman**  RM556607
-David rapeckman gomes de souza 
- 💼 Estudante de Análise e Desenvolvimento de Sistemas na FIAP  
+- David rapeckman gomes de souza 
+ - 💼 Estudante de Análise e Desenvolvimento de Sistemas na FIAP  
   🔗 [linkedin.com/in/davidrapeckman](https://linkedin.com/in/davidrapeckman)
 
 - **Luis Felippe Morais**  RM558127
-Luis Felippe Morais das Neves
-  💼 Estudante de Análise e Desenvolvimento de Sistemas na FIAP  
+- Luis Felippe Morais das Neves
+ - 💼 Estudante de Análise e Desenvolvimento de Sistemas na FIAP  
   🔗 [linkedin.com/in/luis-felippe-morais-das-neves-16219b2b9](https://linkedin.com/in/luis-felippe-morais-das-neves-16219b2b9)
 
 ---
