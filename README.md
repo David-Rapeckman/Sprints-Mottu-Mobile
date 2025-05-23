@@ -83,3 +83,29 @@ src/
     ├── navigation.ts
     ├── user.ts
     └── vehicles.ts
+
+
+Como Rodar o Projeto Localmente
+
+Siga as instruções abaixo para rodar o projeto em seu ambiente local:
+Pré-requisitos
+
+
+Node.js (versão 14 ou superior)
+Expo CLI (instale com o comando npm install -g expo-cli)
+Yarn (opcional, mas recomendado para melhor performance)
+
+Passos
+
+
+Clone o repositório:
+git clone https://github.com/SeuUsuario/SysTrack.git
+Navegue até a pasta do projeto:
+cd SysTrack
+Instale as dependências:
+npm install
+Inicie o servidor do Expo:
+npm start
+O Expo CLI abrirá uma nova janela no navegador com o código QR. Você pode escanear o código QR com o aplicativo Expo Go no seu dispositivo ou usar o emulador.
+
+
