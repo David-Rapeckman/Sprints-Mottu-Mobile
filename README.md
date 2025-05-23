@@ -104,7 +104,7 @@ Siga as instruções abaixo para rodar o projeto em seu ambiente local:
 
 Navegue até a pasta do projeto:
    ```bash
-   cd SysTrack
+   cd Sprints-Mottu-Mobile
    ```
 Instale as dependências:
    ```bash
