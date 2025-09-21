@@ -1,3 +1,4 @@
+// (mantive o seu fluxo de simulação e acrescentei validação extra + mascarazinha simples)
 import React, { useState } from 'react';
 import {
   View,
@@ -26,9 +27,16 @@ const SignUpScreen = () => {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
 
+  const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // ADICIONADO
+
   const handleSignUp = async () => {
     if (!name || !birthdate || !email || !password || !confirm) {
       Alert.alert('Erro', 'Preencha todos os campos.');
+      return;
+    }
+
+    if (!isEmail(email)) {
+      Alert.alert('Erro', 'E-mail inválido.');
       return;
     }
 

@@ -1,3 +1,4 @@
+// (apenas mantive e adicionei um pequeno espaçamento no final)
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,6 +23,7 @@ const AboutAppScreen = ({ navigation }: any) => {
         Desenvolvido como projeto acadêmico da FIAP, esse aplicativo utiliza recursos modernos de rastreamento, conectividade IoT e interface amigável para melhorar a gestão de pátios de veículos.
       </Text>
       <Text style={styles.version}>Versão 1.0.0</Text>
+      <View style={{ height: 20 }} /> {/* ADICIONADO */}
     </SafeAreaView>
   );
 };

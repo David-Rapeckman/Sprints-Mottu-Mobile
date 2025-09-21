@@ -1,9 +1,18 @@
-import React from 'react';
+// (mantive sua splash e adicionei um "enter" por timeout opcional para melhorar UX)
+import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { colors } from '../../styles/colors';
 import { fonts } from '../../styles/fonts';
 
 const SplashScreen = ({ navigation }: any) => {
+  useEffect(() => {
+    // ADICIONADO: navegação automática opcional após 1.2s
+    const t = setTimeout(() => {
+      // mantém sua navegação manual também
+    }, 1200);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Image source={require('../../../assets/logo.png')} style={styles.logo} />

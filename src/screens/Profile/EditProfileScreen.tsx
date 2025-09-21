@@ -1,3 +1,4 @@
+// (mantive tudo e adicionei apenas feedback sutil após salvar)
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -8,6 +9,7 @@ import {
   Platform,
   Pressable,
   Modal,
+  Alert, // ADICIONADO
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
@@ -83,6 +85,7 @@ const EditProfileScreen = ({ navigation }: any) => {
       await AsyncStorage.setItem('profile_gender', gender);
       await AsyncStorage.setItem('profile_email', email);
       await AsyncStorage.setItem('profile_birthdate', birthDate.toISOString());
+      Alert.alert('Sucesso', 'Perfil atualizado com sucesso.'); // ADICIONADO
       navigation.navigate('MainApp', { screen: 'VehiclesList' });
     } catch {
       setErrorMessage('Erro ao salvar os dados.');

@@ -1,10 +1,26 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+// (mantido + bloco de dados remotos)
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
+const API_BASE = 'https://68d042fcec1a5ff33826e3bd.mockapi.io/api/v1'; // ADICIONADO
+
 const Moto2Screen = () => {
   const navigation = useNavigation<any>();
+  const [remote, setRemote] = useState<any | null>(null); // ADICIONADO
+  const [loading, setLoading] = useState(false); // ADICIONADO
+
+  useEffect(() => { // ADICIONADO
+    (async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`${API_BASE}/motos`);
+        const list = await res.json();
+        if (Array.isArray(list) && list.length > 1) setRemote(list[1]);
+      } catch (_) {} finally { setLoading(false); }
+    })();
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -35,6 +51,19 @@ const Moto2Screen = () => {
 
           <Text style={styles.label}>Manutenção:</Text>
           <Text style={styles.value}>Pendente</Text>
+        </View>
+
+        <View style={{ marginTop: 16, width: '100%' }}>
+          <Text style={[styles.label, { marginBottom: 6 }]}>Dados remotos (MockAPI):</Text>
+          {loading ? (
+            <ActivityIndicator />
+          ) : remote ? (
+            <Text style={styles.value}>
+              #{remote.id} • {remote.modelo || remote.model || '—'} • {remote.status || '—'}
+            </Text>
+          ) : (
+            <Text style={styles.value}>Nenhuma moto remota encontrada.</Text>
+          )}
         </View>
       </View>
     </SafeAreaView>

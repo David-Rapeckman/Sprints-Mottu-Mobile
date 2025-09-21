@@ -1,3 +1,4 @@
+// (mantive e só acrescentei uma linha final de observação)
 import React from 'react';
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,6 +24,7 @@ const TermsScreen = ({ navigation }: any) => {
           Este app coleta e trata dados pessoais conforme a política de privacidade.
           O uso do sistema está sujeito a regras específicas e poderá ser revogado em caso de violação.
         </Text>
+        <Text style={[styles.text, { fontStyle: 'italic' }]}>Última atualização: 21/09/2025</Text> {/* ADICIONADO */}
       </ScrollView>
     </SafeAreaView>
   );

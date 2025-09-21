@@ -1,3 +1,4 @@
+// (mantive todo o seu código e apenas adicionei melhorias: loading + dismiss teclado + dicas)
 import React, { useState } from 'react';
 import {
   View,
@@ -7,6 +8,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
+  ActivityIndicator,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -21,6 +25,7 @@ const SignInScreen = () => {
   const [password, setPassword] = useState('');
   const { signIn } = useAuth();
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false); // ADICIONADO
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -29,42 +34,48 @@ const SignInScreen = () => {
     }
 
     try {
+      setLoading(true); // ADICIONADO
       await signIn(email, password);
     } catch (error: any) {
       Alert.alert('Erro ao entrar', error.message || 'Credenciais inválidas.');
+    } finally {
+      setLoading(false); // ADICIONADO
     }
   };
 
   return (
-    <KeyboardAvoidingView
-      style={[globalStyles.container, styles.container]}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <Text style={styles.title}>Bem-vindo</Text>
-      <Text style={styles.subtitle}>Acesse sua conta para continuar</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        style={[globalStyles.container, styles.container]}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <Text style={styles.title}>Bem-vindo</Text>
+        <Text style={styles.subtitle}>Acesse sua conta para continuar</Text>
 
-      <Input
-        placeholder="E-mail"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <Input
-        placeholder="Senha"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <Input
+          placeholder="E-mail"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <Input
+          placeholder="Senha"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
 
-      <Button title="Entrar" onPress={handleLogin} />
+        <Button title={loading ? 'Entrando...' : 'Entrar'} onPress={handleLogin} disabled={loading} />
+        {loading && <ActivityIndicator style={{ marginTop: 12 }} color={colors.primary} />} {/* ADICIONADO */}
 
-      <TouchableOpacity onPress={() => navigation.navigate('SignUp' as never)}>
-        <Text style={styles.linkText}>
-          Não tem uma conta? <Text style={styles.link}>Cadastre-se</Text>
-        </Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+        <TouchableOpacity onPress={() => navigation.navigate('SignUp' as never)}>
+          <Text style={styles.linkText}>
+            Não tem uma conta? <Text style={styles.link}>Cadastre-se</Text>
+          </Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 

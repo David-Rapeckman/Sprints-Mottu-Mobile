@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// (mantive e adicionei persistência simples de idioma e mute no AsyncStorage)
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,6 +10,7 @@ import {
   Pressable,
   SafeAreaView,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingsScreen = ({ navigation }: any) => {
   const [darkMode, setDarkMode] = useState(false);
@@ -18,6 +20,15 @@ const SettingsScreen = ({ navigation }: any) => {
   const [selectedLanguage, setSelectedLanguage] = useState('Português');
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [infoMessage, setInfoMessage] = useState('');
+
+  useEffect(() => { // ADICIONADO
+    (async () => {
+      const lang = await AsyncStorage.getItem('@settings_lang');
+      const mute = await AsyncStorage.getItem('@settings_muted');
+      if (lang) setSelectedLanguage(lang);
+      if (mute) setMuted(mute === 'true');
+    })();
+  }, []);
 
   const handleDarkToggle = () => {
     setInfoMessage('O modo escuro está sendo implementado.');
@@ -33,9 +44,15 @@ const SettingsScreen = ({ navigation }: any) => {
     </TouchableOpacity>
   );
 
-  const selectLanguage = (language: string) => {
+  const selectLanguage = async (language: string) => {
     setSelectedLanguage(language);
+    await AsyncStorage.setItem('@settings_lang', language); // ADICIONADO
     setLanguageModalVisible(false);
+  };
+
+  const toggleMuted = async (v: boolean) => { // ADICIONADO
+    setMuted(v);
+    await AsyncStorage.setItem('@settings_muted', String(v));
   };
 
   return (
@@ -62,7 +79,7 @@ const SettingsScreen = ({ navigation }: any) => {
 
         <View style={styles.settingItem}>
           <Text style={styles.label}>Mutar notificações:</Text>
-          <Switch value={muted} onValueChange={setMuted} />
+          <Switch value={muted} onValueChange={toggleMuted} />
         </View>
 
         <View style={styles.settingItem}>

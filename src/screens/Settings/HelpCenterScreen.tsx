@@ -1,3 +1,4 @@
+// (mantive e acrescentei leve instrução final)
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,6 +23,7 @@ const HelpCenterScreen = ({ navigation }: any) => {
       <Text style={styles.note}>
         Nosso time está disponível de segunda a sexta, das 8h às 18h.
       </Text>
+      <Text style={[styles.note, { marginTop: 8 }]}>Obrigado por utilizar o SysTrack!</Text> {/* ADICIONADO */}
     </SafeAreaView>
   );
 };

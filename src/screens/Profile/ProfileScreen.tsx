@@ -1,3 +1,4 @@
+// (mantive tudo e acrescentei uso do avatar salvo no AsyncStorage via Cloudinary)
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -19,6 +20,7 @@ const ProfileScreen = ({ navigation }: any) => {
   const [storedGender, setStoredGender] = useState('');
   const [storedBirthday, setStoredBirthday] = useState('');
   const [storedEmail, setStoredEmail] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null); // ADICIONADO
 
   useEffect(() => {
     const loadData = async () => {
@@ -26,6 +28,7 @@ const ProfileScreen = ({ navigation }: any) => {
       const gender = await AsyncStorage.getItem('profile_gender');
       const birthday = await AsyncStorage.getItem('profile_birthdate');
       const email = await AsyncStorage.getItem('profile_email');
+      const avatar = await AsyncStorage.getItem('@profile_avatar'); // ADICIONADO
 
       if (phone) setStoredPhone(phone);
       if (gender) setStoredGender(gender);
@@ -37,6 +40,7 @@ const ProfileScreen = ({ navigation }: any) => {
         setStoredBirthday(formatted);
       }
       if (email) setStoredEmail(email);
+      if (avatar) setAvatarUrl(avatar); // ADICIONADO
     };
 
     const unsubscribe = navigation.addListener('focus', loadData);
@@ -50,10 +54,11 @@ const ProfileScreen = ({ navigation }: any) => {
       </View>
 
       <View style={styles.avatarWrapper}>
-        <Image
-          source={require('../../../assets/icon.png')}
-          style={styles.avatar}
-        />
+        {avatarUrl ? ( // ADICIONADO
+          <Image source={{ uri: avatarUrl }} style={styles.avatar} />
+        ) : (
+          <Image source={require('../../../assets/icon.png')} style={styles.avatar} />
+        )}
         <TouchableOpacity
           style={styles.editIcon}
           onPress={() => navigation.navigate('ChangePhotoScreen')}
