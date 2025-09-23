@@ -1,5 +1,3 @@
-// src/types/auth.ts
-
 export type UserRole = 'admin' | 'user';
 
 export interface User {
@@ -11,9 +9,7 @@ export interface User {
   birthdate: string;
   phone?: string;
   gender?: string;
-} 
-
-
+}
 
 export interface LoginCredentials {
   email: string;

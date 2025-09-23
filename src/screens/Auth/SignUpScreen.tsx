@@ -1,14 +1,5 @@
-// (mantive o seu fluxo de simulação e acrescentei validação extra + mascarazinha simples)
 import React, { useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableOpacity,
-} from 'react-native';
+import { View, StyleSheet, Text, Alert, KeyboardAvoidingView, Platform, TouchableOpacity, } from 'react-native';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { colors } from '../../styles/colors';
@@ -27,24 +18,15 @@ const SignUpScreen = () => {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
 
-  const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // ADICIONADO
-
   const handleSignUp = async () => {
     if (!name || !birthdate || !email || !password || !confirm) {
       Alert.alert('Erro', 'Preencha todos os campos.');
       return;
     }
-
-    if (!isEmail(email)) {
-      Alert.alert('Erro', 'E-mail inválido.');
-      return;
-    }
-
     if (password !== confirm) {
       Alert.alert('Erro', 'As senhas não coincidem.');
       return;
     }
-
     try {
       await signIn(email, password); // simulação
       Alert.alert('Sucesso', 'Conta criada e login realizado!');
@@ -71,6 +53,7 @@ const SignUpScreen = () => {
 
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Text style={styles.linkText}>
+          {' '}
           Já possui uma conta? <Text style={styles.link}>Entrar</Text>
         </Text>
       </TouchableOpacity>

@@ -1,35 +1,15 @@
-// (mantive seu conteúdo e acrescentei seção "dados remotos" opcional)
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-const API_BASE = 'https://68d042fcec1a5ff33826e3bd.mockapi.io/api/v1'; // ADICIONADO
-
 const Moto1Screen = () => {
   const navigation = useNavigation<any>();
-  const [remote, setRemote] = useState<any | null>(null); // ADICIONADO
-  const [loading, setLoading] = useState(false); // ADICIONADO
-
-  useEffect(() => { // ADICIONADO
-    (async () => {
-      try {
-        setLoading(true);
-        // exemplo: pega a primeira moto cadastrada na API (se existir)
-        const res = await fetch(`${API_BASE}/motos`);
-        const list = await res.json();
-        if (Array.isArray(list) && list.length > 0) setRemote(list[0]);
-      } catch (_) {} finally { setLoading(false); }
-    })();
-  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.navigate('MainApp')}
-        >
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('MainApp')}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.headerText}>Moto 1</Text>
@@ -37,6 +17,7 @@ const Moto1Screen = () => {
 
       <View style={styles.container}>
         <Image source={require('../../../assets/Moto1.png')} style={styles.image} />
+
         <View style={styles.info}>
           <Text style={styles.label}>Modelo:</Text>
           <Text style={styles.value}>KYY-123456</Text>
@@ -52,20 +33,6 @@ const Moto1Screen = () => {
 
           <Text style={styles.label}>Manutenção:</Text>
           <Text style={styles.value}>OK</Text>
-        </View>
-
-        {/* ADICIONADO: bloco opcional vindo da API */}
-        <View style={{ marginTop: 16, width: '100%' }}>
-          <Text style={[styles.label, { marginBottom: 6 }]}>Dados remotos (MockAPI):</Text>
-          {loading ? (
-            <ActivityIndicator />
-          ) : remote ? (
-            <Text style={styles.value}>
-              #{remote.id} • {remote.modelo || remote.model || '—'} • {remote.status || '—'}
-            </Text>
-          ) : (
-            <Text style={styles.value}>Nenhuma moto remota encontrada.</Text>
-          )}
         </View>
       </View>
     </SafeAreaView>

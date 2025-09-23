@@ -1,18 +1,9 @@
-// (mantive sua splash e adicionei um "enter" por timeout opcional para melhorar UX)
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { colors } from '../../styles/colors';
 import { fonts } from '../../styles/fonts';
 
 const SplashScreen = ({ navigation }: any) => {
-  useEffect(() => {
-    // ADICIONADO: navegação automática opcional após 1.2s
-    const t = setTimeout(() => {
-      // mantém sua navegação manual também
-    }, 1200);
-    return () => clearTimeout(t);
-  }, []);
-
   return (
     <View style={styles.container}>
       <Image source={require('../../../assets/logo.png')} style={styles.logo} />
@@ -27,9 +18,11 @@ const SplashScreen = ({ navigation }: any) => {
       </TouchableOpacity>
 
       <Text style={styles.footerText}>
+        {' '}
         Ainda não tem uma conta?{' '}
         <Text style={styles.link} onPress={() => navigation.navigate('SignUp')}>
-          Cadastre-se
+          {' '}
+          Cadastre-se{' '}
         </Text>
       </Text>
     </View>
@@ -51,7 +44,7 @@ const styles = StyleSheet.create({
     height: 180,
     marginBottom: 32,
     resizeMode: 'contain',
-    borderRadius: 100, 
+    borderRadius: 100,
   },
   title: {
     fontSize: fonts.size.title + 8,
@@ -81,7 +74,7 @@ const styles = StyleSheet.create({
   footerText: {
     fontFamily: fonts.regular,
     color: colors.gray,
-    fontSize: fonts.size.small,  
+    fontSize: fonts.size.small,
   },
   link: {
     color: colors.primary,

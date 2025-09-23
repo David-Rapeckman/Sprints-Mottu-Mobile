@@ -1,4 +1,3 @@
-// (apenas mantive e adicionei um pequeno espaçamento no final)
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,10 +19,10 @@ const AboutAppScreen = ({ navigation }: any) => {
         SysTrack é uma solução inteligente para monitoramento de frotas de motocicletas em tempo real.
       </Text>
       <Text style={styles.text}>
-        Desenvolvido como projeto acadêmico da FIAP, esse aplicativo utiliza recursos modernos de rastreamento, conectividade IoT e interface amigável para melhorar a gestão de pátios de veículos.
+        Desenvolvido como projeto acadêmico da FIAP, esse aplicativo utiliza recursos modernos de rastreamento,
+        conectividade IoT e interface amigável para melhorar a gestão de pátios de veículos.
       </Text>
       <Text style={styles.version}>Versão 1.0.0</Text>
-      <View style={{ height: 20 }} /> {/* ADICIONADO */}
     </SafeAreaView>
   );
 };

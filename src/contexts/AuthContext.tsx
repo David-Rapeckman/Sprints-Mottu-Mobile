@@ -16,7 +16,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const seedAdminUser = async () => {
     const storedUsers = await AsyncStorage.getItem('@users');
     const users: User[] = storedUsers ? JSON.parse(storedUsers) : [];
-
     const adminExists = users.some(u => u.email === 'admin@gmail.com');
     if (!adminExists) {
       const admin: User = {
@@ -44,10 +43,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signIn = async (email: string, password: string) => {
     const storedUsers = await AsyncStorage.getItem('@users');
     const users: User[] = storedUsers ? JSON.parse(storedUsers) : [];
-
     const foundUser = users.find(u => u.email === email && u.password === password);
     if (!foundUser) throw new Error('Credenciais inválidas');
-
     await AsyncStorage.setItem('@user', JSON.stringify(foundUser));
     setUser(foundUser);
   };

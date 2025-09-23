@@ -23,11 +23,18 @@ const styles = StyleSheet.create({
     borderRadius: metrics.radius,
     alignItems: 'center',
     marginTop: 10,
+    // melhoria visual
+    shadowColor: colors.black,
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    elevation: 3,
   },
   buttonText: {
     color: colors.white,
     fontSize: fonts.size.medium,
     fontWeight: 'bold',
+    letterSpacing: 0.3,
   },
 });
 

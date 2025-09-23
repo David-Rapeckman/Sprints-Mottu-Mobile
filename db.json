@@ -1,0 +1,7 @@
+{
+  "motos": [
+    { "id": 1, "modelo": "KYY-123456", "status": "Alugada", "user": "João" },
+    { "id": 2, "modelo": "KYY-154456", "status": "Livre" },
+    { "id": 3, "modelo": "KXX-159456", "status": "Livre" }
+  ]
+}

@@ -22,11 +22,15 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: metrics.padding,
     alignItems: 'center',
+    // melhoria
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
   },
   title: {
     color: colors.green,
     fontSize: fonts.size.title,
     fontWeight: 'bold',
+    letterSpacing: 0.5,
   },
 });
 

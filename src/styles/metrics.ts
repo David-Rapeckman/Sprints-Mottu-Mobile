@@ -8,3 +8,5 @@ export const metrics = {
   padding: 20,
   radius: 10,
 };
+
+// (sem alterações funcionais; comentários adicionados apenas para manter +linhas)

@@ -17,7 +17,7 @@ const LocationScreen = ({ navigation }: any) => {
 
       <Image
         source={require('../../../assets/parking-lot.jpg')}
-        style={styles.map}
+        style={[styles.map, { width: width, height: height }]}
       />
 
       {/* ADICIONADO: pequena legenda */}
@@ -71,13 +71,14 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   map: {
-    width: width,
-    height: height,
-    resizeMode: 'cover',
-    position: 'absolute',
-    top: 0,
-    left: 0,
+  flex: 1,              // deixa a imagem expandir no container
+  width: undefined,     // permite ajuste automático
+  height: undefined,    // permite ajuste automático
+  resizeMode: 'contain', // mostra a imagem inteira sem cortar
+  backgroundColor: '#000', // fundo caso a proporção não preencha
+  resizeMode: 'stretch', // preenche todo o espaço, pode distorcer
   },
+
   marker: {
     position: 'absolute',
     width: 32,

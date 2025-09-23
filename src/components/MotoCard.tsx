@@ -14,7 +14,7 @@ interface MotoCardProps {
 
 const MotoCard: React.FC<MotoCardProps> = ({ modelo, status, user, image, onPress }) => {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.9}>
       <Image source={image} style={styles.image} />
       <View style={styles.info}>
         <Text style={styles.modelo}>{modelo}</Text>
@@ -39,6 +39,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     elevation: 2,
+    // melhoria
+    borderWidth: 1,
+    borderColor: '#f0f0f0',
   },
   image: {
     width: 80,

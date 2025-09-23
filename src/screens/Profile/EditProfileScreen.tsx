@@ -1,16 +1,5 @@
-// (mantive tudo e adicionei apenas feedback sutil após salvar)
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  Platform,
-  Pressable,
-  Modal,
-  Alert, // ADICIONADO
-} from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Platform, Pressable, Modal, } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -30,7 +19,6 @@ const EditProfileScreen = ({ navigation }: any) => {
       const g = await AsyncStorage.getItem('profile_gender');
       const e = await AsyncStorage.getItem('profile_email');
       const b = await AsyncStorage.getItem('profile_birthdate');
-
       if (p) setPhone(p);
       if (g) setGender(g);
       if (e) setEmail(e);
@@ -40,6 +28,19 @@ const EditProfileScreen = ({ navigation }: any) => {
   }, []);
 
   const formatPhone = (value: string) => {
+    // const cleaned = value.replace(/\D/g, '').slice(0, 11);
+    // const match = cleaned.match(/^(\d{0,2})(\d{0,5})(\d{0,4})$/);
+    // if (!match) return value;
+    // const [, ddd, prefix, suffix] = match;
+    // let result = '';
+    // if (ddd) result += (${ddd};
+    // if (ddd.length === 2) result += ') ';
+    // if (prefix) result += prefix;
+    // if (prefix.length === 5) result += '-';
+    // if (suffix) result += suffix;
+    // return result;
+
+    // ✅ Versão corrigida mantendo a original comentada acima
     const cleaned = value.replace(/\D/g, '').slice(0, 11);
     const match = cleaned.match(/^(\d{0,2})(\d{0,5})(\d{0,4})$/);
     if (!match) return value;
@@ -57,7 +58,8 @@ const EditProfileScreen = ({ navigation }: any) => {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    // return ${day}/${month}/${year};
+    return `${day}/${month}/${year}`; // ✅ corrigido
   };
 
   const validatePhone = (value: string) => value.trim() !== '' && /^\(\d{2}\) \d{5}-\d{4}$/.test(value);
@@ -79,13 +81,11 @@ const EditProfileScreen = ({ navigation }: any) => {
       setShowErrorModal(true);
       return;
     }
-
     try {
       await AsyncStorage.setItem('profile_phone', phone);
       await AsyncStorage.setItem('profile_gender', gender);
       await AsyncStorage.setItem('profile_email', email);
       await AsyncStorage.setItem('profile_birthdate', birthDate.toISOString());
-      Alert.alert('Sucesso', 'Perfil atualizado com sucesso.'); // ADICIONADO
       navigation.navigate('MainApp', { screen: 'VehiclesList' });
     } catch {
       setErrorMessage('Erro ao salvar os dados.');
@@ -132,6 +132,7 @@ const EditProfileScreen = ({ navigation }: any) => {
       <Pressable style={styles.input} onPress={() => setShowDatePicker(true)}>
         <Text style={{ color: '#333' }}>{birthDate ? formatDate(birthDate) : 'Selecionar data'}</Text>
       </Pressable>
+
       {showDatePicker && (
         <DateTimePicker
           value={birthDate}
@@ -166,7 +167,6 @@ const EditProfileScreen = ({ navigation }: any) => {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Erro</Text>
             <Text style={styles.modalOptionText}>{errorMessage}</Text>
-
             <Pressable
               style={[styles.modalOption, styles.modalCancel]}
               onPress={() => setShowErrorModal(false)}

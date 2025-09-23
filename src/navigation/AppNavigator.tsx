@@ -1,21 +1,25 @@
 // src/navigation/AppNavigator.tsx
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ProfileScreen from '@screens/Profile/ProfileScreen';
-import VehiclesList from '@screens/Vehicles/VehiclesList';
 import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuth } from '../contexts/AuthContext';
+import TabNavigator from './TabNavigator';
+
+// Auth
 import SignInScreen from '../screens/Auth/SignInScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
 import SplashScreen from '../screens/Auth/SplashScreen';
-import ChangePhotoScreen from '../screens/Profile/ChangePhotoScreen';
-import EditProfileScreen from '../screens/Profile/EditProfileScreen';
-import AboutAppScreen from '../screens/Settings/AboutAppScreen';
-import HelpCenterScreen from '../screens/Settings/HelpCenterScreen';
-import TermsScreen from '../screens/Settings/TermsScreen';
+
+// Stacks internos (veículos dentro da aba Vehicles)
 import Moto1Screen from '../screens/Vehicles/Moto1Screen';
 import Moto2Screen from '../screens/Vehicles/Moto2Screen';
 import Moto3Screen from '../screens/Vehicles/Moto3Screen';
-import TabNavigator from './TabNavigator';
+import VehiclesList from '../screens/Vehicles/VehiclesList';
+
+// Settings/Outras
+import TermsScreen from '../screens/Settings/TermsScreen';
+import AboutAppScreen from '../screens/Settings/AboutAppScreen';
+import HelpCenterScreen from '../screens/Settings/HelpCenterScreen';
+import ProfileScreen from '../screens/Profile/ProfileScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -26,8 +30,6 @@ export type RootStackParamList = {
   Moto2Screen: undefined;
   Moto3Screen: undefined;
   VehiclesList: undefined;
-  ChangePhotoScreen: undefined;
-  EditProfileScreen: undefined;
   TermsScreen: undefined;
   AboutAppScreen: undefined;
   HelpCenterScreen: undefined;
@@ -50,12 +52,11 @@ const AppNavigator = () => {
       ) : (
         <>
           <Stack.Screen name="MainApp" component={TabNavigator} />
+          {/* As telas abaixo continuam acessíveis pelo root se necessário, mas Edit/Change Photo ficam dentro do ProfileStack */}
           <Stack.Screen name="Moto1Screen" component={Moto1Screen} />
           <Stack.Screen name="Moto2Screen" component={Moto2Screen} />
           <Stack.Screen name="Moto3Screen" component={Moto3Screen} />
           <Stack.Screen name="VehiclesList" component={VehiclesList} />
-          <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
-          <Stack.Screen name="ChangePhotoScreen" component={ChangePhotoScreen} />
           <Stack.Screen name="TermsScreen" component={TermsScreen} />
           <Stack.Screen name="AboutAppScreen" component={AboutAppScreen} />
           <Stack.Screen name="HelpCenterScreen" component={HelpCenterScreen} />

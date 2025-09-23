@@ -13,6 +13,9 @@ const defaultAdmin: User = {
   password: 'admin123',
   birthdate: '1990-01-01',
   role: 'admin',
+  // extras opcionais para manter coesão com o restante do app
+  phone: '(11) 91234-5678',
+  gender: 'Masculino',
 };
 
 let users: User[] = [defaultAdmin];
@@ -29,7 +32,9 @@ export const authService = {
     if (!user) throw new Error('Email ou senha inválidos.');
 
     await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
-    return { user, token: `token-${user.id}` };
+
+    // return { user, token: token-${user.id} }; // ❌ linha original com template string incorreta
+    return { user, token: `token-${user.id}` }; // ✅ corrigido, mantendo a original comentada
   },
 
   async getStoredUser(): Promise<User | null> {

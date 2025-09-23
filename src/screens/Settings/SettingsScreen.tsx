@@ -1,16 +1,5 @@
-// (mantive e adicionei persistência simples de idioma e mute no AsyncStorage)
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  Switch,
-  TouchableOpacity,
-  StyleSheet,
-  Modal,
-  Pressable,
-  SafeAreaView,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react';
+import { View, Text, Switch, TouchableOpacity, StyleSheet, Modal, Pressable, SafeAreaView, } from 'react-native';
 
 const SettingsScreen = ({ navigation }: any) => {
   const [darkMode, setDarkMode] = useState(false);
@@ -21,38 +10,20 @@ const SettingsScreen = ({ navigation }: any) => {
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [infoMessage, setInfoMessage] = useState('');
 
-  useEffect(() => { // ADICIONADO
-    (async () => {
-      const lang = await AsyncStorage.getItem('@settings_lang');
-      const mute = await AsyncStorage.getItem('@settings_muted');
-      if (lang) setSelectedLanguage(lang);
-      if (mute) setMuted(mute === 'true');
-    })();
-  }, []);
-
   const handleDarkToggle = () => {
     setInfoMessage('O modo escuro está sendo implementado.');
     setInfoModalVisible(true);
   };
 
   const renderLink = (title: string, screen: string) => (
-    <TouchableOpacity
-      style={styles.linkButton}
-      onPress={() => navigation.navigate(screen)}
-    >
+    <TouchableOpacity style={styles.linkButton} onPress={() => navigation.navigate(screen)}>
       <Text style={styles.linkText}>{title}</Text>
     </TouchableOpacity>
   );
 
-  const selectLanguage = async (language: string) => {
+  const selectLanguage = (language: string) => {
     setSelectedLanguage(language);
-    await AsyncStorage.setItem('@settings_lang', language); // ADICIONADO
     setLanguageModalVisible(false);
-  };
-
-  const toggleMuted = async (v: boolean) => { // ADICIONADO
-    setMuted(v);
-    await AsyncStorage.setItem('@settings_muted', String(v));
   };
 
   return (
@@ -64,10 +35,7 @@ const SettingsScreen = ({ navigation }: any) => {
       <View style={styles.container}>
         <View style={styles.settingItem}>
           <Text style={styles.label}>Linguagem:</Text>
-          <TouchableOpacity
-            style={styles.selectButton}
-            onPress={() => setLanguageModalVisible(true)}
-          >
+          <TouchableOpacity style={styles.selectButton} onPress={() => setLanguageModalVisible(true)}>
             <Text style={styles.selectButtonText}>{selectedLanguage}</Text>
           </TouchableOpacity>
         </View>
@@ -79,15 +47,12 @@ const SettingsScreen = ({ navigation }: any) => {
 
         <View style={styles.settingItem}>
           <Text style={styles.label}>Mutar notificações:</Text>
-          <Switch value={muted} onValueChange={toggleMuted} />
+          <Switch value={muted} onValueChange={setMuted} />
         </View>
 
         <View style={styles.settingItem}>
           <Text style={styles.label}>Notificações personalizadas:</Text>
-          <Switch
-            value={customNotifications}
-            onValueChange={setCustomNotifications}
-          />
+          <Switch value={customNotifications} onValueChange={setCustomNotifications} />
         </View>
 
         <View style={styles.linksContainer}>
@@ -107,22 +72,18 @@ const SettingsScreen = ({ navigation }: any) => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Selecione o idioma</Text>
+
             {['Português', 'Inglês', 'Espanhol', 'Francês'].map((lang) => (
-              <Pressable
-                key={lang}
-                style={styles.modalOption}
-                onPress={() => selectLanguage(lang)}
-              >
+              <Pressable key={lang} style={styles.modalOption} onPress={() => selectLanguage(lang)}>
                 <Text style={styles.modalOptionText}>{lang}</Text>
               </Pressable>
             ))}
+
             <Pressable
               style={[styles.modalOption, styles.modalCancel]}
               onPress={() => setLanguageModalVisible(false)}
             >
-              <Text style={[styles.modalOptionText, { color: 'red' }]}>
-                Cancelar
-              </Text>
+              <Text style={[styles.modalOptionText, { color: 'red' }]}> Cancelar </Text>
             </Pressable>
           </View>
         </View>
@@ -143,9 +104,7 @@ const SettingsScreen = ({ navigation }: any) => {
               style={[styles.modalOption, styles.modalCancel]}
               onPress={() => setInfoModalVisible(false)}
             >
-              <Text style={[styles.modalOptionText, { color: 'red' }]}>
-                Fechar
-              </Text>
+              <Text style={[styles.modalOptionText, { color: 'red' }]}> Fechar </Text>
             </Pressable>
           </View>
         </View>
