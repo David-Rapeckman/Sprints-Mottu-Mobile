@@ -142,7 +142,7 @@ curl -s -X POST "https://68d042fcec1a5ff33826e3bd.mockapi.io/api/v1/motos"   -H 
 ---
 
 ## 🎨 Protótipo no Figma
-👉 **Link do Figma (atualizado):** <https://www.figma.com/design/SEU_LINK_AQUI>
+👉 **Link do Figma (Sprint 3):** <https://www.figma.com/design/ccLpWM3NX8JdMknWEk4I8j/Sprint-1-2-3?node-id=0-1&p=f&t=l7DkeLwnJIqPtVwD-0>
 
 ---
 
