@@ -29,15 +29,15 @@ Instruções de Instalação e Execução
 
    ```bash
    git clone [https://github.com//SysTrack.git](https://github.com/David-Rapeckman/Sprints-Mottu-Mobile/)
-  ``
+   
 Navegue até a pasta do projeto:
 
    ```bash
    cd Sprints-Mottu-Mobile
    ```
    ```bash
-npm install   (ou: yarn)
-```
+   npm install   (ou: yarn)
+   ```
 3) Executar em modo desenvolvimento (Expo)
 npx expo start
 Atalhos: a (Android), i (iOS), w (web). No celular, abrir o app Expo Go e escanear o QR Code.
