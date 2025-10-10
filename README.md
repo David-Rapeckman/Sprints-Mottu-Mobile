@@ -76,6 +76,11 @@ npx eas-cli build -p ios --profile production
 
 ---
 
+![Uploading Screen Shot 2025-10-10 at 14.35.22.png…]()
+
+
+---
+
 ## 🚀 Como rodar com a API (Expo Go + MockAPI + Cloudinary)
 
 Executando o app consumindo a **MockAPI** para motos e usando o **Cloudinary** para imagens (foto de perfil etc.). Funciona no **Expo Go** (Android/iOS) e em emuladores.
