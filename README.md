@@ -76,8 +76,7 @@ npx eas-cli build -p ios --profile production
 
 ---
 
-![Uploading Screen Shot 2025-10-10 at 14.35.22.png…]()
-
+<img width="176" height="164" alt="image" src="https://github.com/user-attachments/assets/9d2d496d-8a24-415c-8c09-f8ce125d57cd" />
 
 ---
 
