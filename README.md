@@ -1,8 +1,10 @@
-# SysTrack — Monitoramento Inteligente de Motos (Mottu Challenge)
 
-> App mobile (Expo/React Native) para **mapeamento e monitoramento em tempo real** de motos em pátios de múltiplas filiais, com base preparada para integração IoT/telemetria e visão computacional.
+# SysTrack — Guia de Execução (Expo, MockAPI e JSON Server)
+
+> App mobile (Expo/React Native) para **mapeamento e monitoramento** de motos (POC). Este guia mostra como rodar tudo **com MockAPI (nuvem)** e, opcionalmente, **com JSON Server (local)**. Também inclui credenciais padrão e dicas de solução de problemas.
 
 ---
+
 
 ## 📌 Escopo do Aplicativo
 
@@ -34,168 +36,207 @@
 
 ---
 
-## 🛠️ Instruções de Instalação e Execução
+## ✅ Credenciais padrão
+- **E-mail:** `admin@gmail.com`
+- **Senha:** `admin123`
 
-### 1) Pré-requisitos
-- **Node.js** 20.x (LTS)
-- **npm** 10.x ou **yarn**
-- **Expo Go** instalado no smartphone (Android/iOS) **ou** emulador:
-  - Android: Android Studio + AVD
-  - iOS (macOS): Xcode + iOS Simulator
-- (Opcional) **EAS CLI** para builds nativos
-
-### 2) Clonar e instalar
-```bash
-git clone https://github.com/David-Rapeckman/Sprints-Mottu-Mobile.git
-cd Sprints-Mottu-Mobile
-npm install   # ou: yarn
-```
-
-### 3) Executar em modo desenvolvimento (Expo)
-```bash
-npx expo start
-```
-**Atalhos:** `a` (Android), `i` (iOS), `w` (web).  
-No celular, abra o **Expo Go** e escaneie o QR Code.
-
-### 4) Build com EAS (opcional)
-```bash
-# login (uma vez)
-npx eas-cli login
-
-# configurar perfis (gera/atualiza eas.json)
-npx eas-cli build:configure
-
-# build de teste interno (Android APK)
-npx eas-cli build -p android --profile preview
-
-# produção (Android AAB ou iOS archive)
-npx eas-cli build -p android --profile production
-npx eas-cli build -p ios --profile production
-```
+> O usuário admin é semeado no primeiro load via AsyncStorage (`seedAdminUser`).
 
 ---
 
-<img width="176" height="164" alt="image" src="https://github.com/user-attachments/assets/9d2d496d-8a24-415c-8c09-f8ce125d57cd" />
+## 1) Requisitos
+- Node.js 18+ (LTS)
+- npm 9+ (ou yarn)
+- **Expo Go** no celular (Android/iOS) *ou* emulador (Android Studio / Xcode)
+- (Opcional) **JSON Server** para API local
 
 ---
 
-## 🚀 Como rodar com a API (Expo Go + MockAPI + Cloudinary)
-
-Executando o app consumindo a **MockAPI** para motos e usando o **Cloudinary** para imagens (foto de perfil etc.). Funciona no **Expo Go** (Android/iOS) e em emuladores.
-
-### 1) Pré-requisitos
-- **Node 18/20** instalado
-- **Expo Go** no celular (Play Store/App Store)
-- Acesso à **MockAPI** e **Cloudinary** (já configurados no projeto)
-
-### 2) Variáveis de ambiente
-Crie um arquivo **`.env`** na raiz do projeto (uma vez).  
-Sempre que editar o `.env`, reinicie com `npx expo start --clear`.
-
-**Exemplo de `.env`:**
+## 2) Instalação do projeto
 ```bash
-# Base da MockAPI (sem barra no final)
+# Clonar e instalar
+git clone <seu-repo>
+cd <pasta-do-projeto>
+npm install
+
+# Sempre que mudar o .env, limpe o cache
+npx expo start -c
+```
+Atalhos do Dev Server: `a` (Android) • `i` (iOS) • `w` (web).
+
+---
+
+## 3) Variáveis de ambiente (`.env`)
+Crie um arquivo **`.env`** na raiz e escolha **UMA** das opções abaixo.
+
+### Opção A — MockAPI **com Base Path correto** (recomendado)
+No painel do MockAPI (⚙️ **Settings** do projeto), deixe **Base path** = **`/api/v1`** (sem `/motos`).  
+Depois, use este `.env`:
+
+```env
 EXPO_PUBLIC_API_BASE=https://68d042fcec1a5ff33826e3bd.mockapi.io/api/v1
-
-# Cloudinary (upload unsigned)
 EXPO_PUBLIC_CLOUDINARY_CLOUD=dawxgqnfj
 EXPO_PUBLIC_CLOUDINARY_PRESET=perfil_unsigned
 ```
-> **Cloudinary:** o *Upload Preset* deve estar como **unsigned** (*Settings → Upload → Upload presets*).
+**Endpoints reais:**
+- `GET .../motos`
+- `GET .../motos/:id`
+- `POST .../motos`
+- `PUT/PATCH .../motos/:id`
+- `DELETE .../motos/:id`
 
-### 3) Instalação e execução
+### Opção B — MockAPI **com Base Path incluindo `/motos`**
+Se o seu projeto estiver com **Base path = `/api/v1/motos`**, então use:
+```env
+EXPO_PUBLIC_API_BASE=https://68d042fcec1a5ff33826e3bd.mockapi.io/api/v1/motos
+EXPO_PUBLIC_CLOUDINARY_CLOUD=dawxgqnfj
+EXPO_PUBLIC_CLOUDINARY_PRESET=perfil_unsigned
+```
+E **ajuste o serviço** para apontar direto à raiz do recurso (veja seção *Serviços de API*).  
+**Endpoints reais continuam iguais**, mas agora o base já termina em `/motos`:
+- `GET .../` (lista)
+- `GET .../:id`
+- etc.
+
+> Sempre que editar o `.env`, rode `npx expo start -c`.  
+> O Metro deve imprimir algo como: `🔗 [api] API_URL = https://...`
+
+---
+
+## 4) Serviços de API (onde o app chama a MockAPI)
+
+### Arquivo base — `src/services/api.ts`
+- Lê `EXPO_PUBLIC_API_BASE` (ou faz **fallback** local: `10.0.2.2:3000` Android, `127.0.0.1:3000` iOS).  
+- Não é preciso alterar.
+
+### Serviço de motos — `src/services/motos.service.ts`
+
+#### Se estiver usando **Opção A** (Base path = `/api/v1`)
+```ts
+const resource = '/motos';
+
+export const motosService = {
+  list: () => api.get<MotoDTO[]>(resource),
+  getById: (id: string) => api.get<MotoDTO>(`${resource}/${id}`),
+  create: (payload: MotoDTO) => api.post<MotoDTO>(resource, payload),
+  update: (id: string, payload: Partial<MotoDTO>) => api.put<MotoDTO>(`${resource}/${id}`, payload),
+  remove: (id: string) => api.del<void>(`${resource}/${id}`),
+};
+```
+
+#### Se estiver usando **Opção B** (Base path = `/api/v1/motos`)
+```ts
+const resource = ''; // base já termina em /motos
+
+export const motosService = {
+  list: () => api.get<MotoDTO>(resource || '/'),
+  getById: (id: string) => api.get<MotoDTO>(`/${id}`),
+  create: (payload: MotoDTO) => api.post<MotoDTO>(resource || '/', payload),
+  update: (id: string, payload: Partial<MotoDTO>) => api.put<MotoDTO>(`/${id}`, payload),
+  remove: (id: string) => api.del<void>(`/${id}`),
+};
+```
+
+---
+
+## 5) Execução com MockAPI (Expo Go)
+
 ```bash
 npm install
-npx expo doctor 
-npx expo start --clear
+npx expo start -c
 ```
-Abra o **Expo DevTools** e escaneie o QR code com o **Expo Go** (ou rode no emulador Android/iOS).
+- Abra o **Expo Go** e escaneie o QR code.
+- Vá até **Vehicles** → deve listar as motos cadastradas no MockAPI.
 
-### 4) O que o app consome da API
-
-**MockAPI (motos):**
-- `GET /motos` – lista de motos exibida em `VehiclesList`
-- `GET /motos/:id` – detalhamento (opcional)
-- `POST /motos`, `PUT /motos/:id`, `DELETE /motos/:id` – CRUD (opcionais para MVP)
-
-**Cloudinary (imagens):**
-- Upload **unsigned** via `POST https://api.cloudinary.com/v1_1/<cloud>/image/upload`
-- O app salva a `secure_url` como avatar no **AsyncStorage**
-
-### 5) Como validar rapidamente
-
-**No app:**
-- A aba **Vehicles** deve carregar as motos da MockAPI (se a API estiver vazia, crie alguns itens na collection `motos`).
-- Em **Profile → Change Photo**, cole uma URL de imagem e salve (o app envia ao Cloudinary e guarda a URL).
-
-**Via cURL (opcional):**
+**Testes rápidos:**
 ```bash
-# Listar motos
+# Lista
 curl -s "https://68d042fcec1a5ff33826e3bd.mockapi.io/api/v1/motos"
 
-# Criar uma moto
-curl -s -X POST "https://68d042fcec1a5ff33826e3bd.mockapi.io/api/v1/motos"   -H "Content-Type: application/json"   -d '{"modelo":"KYY-999999","status":"Livre","user":""}'
-```
+# Detalhe (id 1, por exemplo)
+curl -s "https://68d042fcec1a5ff33826e3bd.mockapi.io/api/v1/motos/1"
 
-### 6) Dicas e solução de problemas
-- Se o app não reconhecer o `.env`, rode com **cache limpo**: `npx expo start --clear`
-- Se aparecer alerta de versões, rode: `npx expo doctor`
-- Em redes corporativas, verifique **VPN/proxy** (a MockAPI precisa estar acessível do celular).
-
----
-
-## 🎨 Protótipo no Figma
-👉 **Link do Figma (Sprint 3):** <https://www.figma.com/design/ccLpWM3NX8JdMknWEk4I8j/Sprint-1-2-3?node-id=0-1&p=f&t=l7DkeLwnJIqPtVwD-0>
-
----
-
-## 📲 Versão publicada no Expo
-**Projeto no Expo:** <https://expo.dev/accounts/rapeckman/projects/systrack>  
-
-> Para testes internos, compartilhe o **link da página do build** gerado pelo EAS (Android: APK com botão *Install*; iOS: TestFlight).  
-> Para distribuição pública, publicar nas lojas (Play Store / App Store) e compartilhar os respectivos links.
-
----
-
-## 🧩 Tecnologias Principais
-- **Expo SDK 52**
-- **React Native 0.76.x**
-- **TypeScript 5.x**
-- **React Navigation** (stack/tabs) *(se aplicável)*
-- **AsyncStorage** para persistência local
-- **@expo/vector-icons** (requer `expo-font`)
-- **EAS Build/Update** para CI e distribuição
-
-> Dica: use `npx expo install --check` para validar dependências.
-
----
-
-## 📁 Estrutura de Pastas (resumo)
-```text
-.
-├── assets/
-│   ├── logo.png
-│   ├── adaptive-icon.png
-│   └── splash.png
-├── app/                 # se usando roteamento por pastas do Expo Router
-├── src/
-│   ├── components/
-│   ├── constants/
-│   ├── hooks/
-│   ├── screens/         # Auth, Home, Vehicles, Profile, Settings...
-│   ├── services/
-│   ├── contexts/        # AuthContext, etc.
-│   └── types/
-├── app.json
-├── eas.json
-├── package.json
-└── tsconfig.json
+# Criar
+curl -s -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"modelo":"KYY-999999","status":"Livre"}' \
+  "https://68d042fcec1a5ff33826e3bd.mockapi.io/api/v1/motos"
 ```
 
 ---
 
-## ▶️ Scripts úteis (package.json)
+## 6) Execução com **JSON Server** (API local, opcional)
+
+Use **apenas** se quiser desenvolver sem internet/MockAPI.
+
+### 6.1) Estrutura do `db.json`
+Crie `db.json` na raiz com conteúdo coerente ao app:
+```json
+{
+  "motos": [
+    { "id": 1, "modelo": "KYY-123456", "status": "Alugada", "user": "João" },
+    { "id": 2, "modelo": "KYY-154456", "status": "Livre" },
+    { "id": 3, "modelo": "KXX-159456", "status": "Livre" }
+  ]
+}
+```
+
+### 6.2) Iniciar o JSON Server
+```bash
+npx json-server --watch db.json --port 3000
+```
+- Android emulador → o app acessa `http://10.0.2.2:3000`
+- iOS simulador → `http://127.0.0.1:3000`
+
+> O `api.ts` já faz esse fallback automático **se** `EXPO_PUBLIC_API_BASE` não estiver definido.
+
+### 6.3) Rodar o app apontando para o JSON Server
+```bash
+# (1) Apague ou comente EXPO_PUBLIC_API_BASE no .env
+# (2) Inicie o servidor local (passo 6.2)
+# (3) Inicie o Expo limpo:
+npx expo start -c
+```
+
+### 6.4) Testes no JSON Server
+```bash
+# Lista local
+curl -s "http://localhost:3000/motos"
+```
+
+---
+
+## 7) Cloudinary (upload unsigned)
+
+No `.env`, já existem:
+```env
+EXPO_PUBLIC_CLOUDINARY_CLOUD=dawxgqnfj
+EXPO_PUBLIC_CLOUDINARY_PRESET=perfil_unsigned
+```
+- Garanta que o **Upload preset** está como **unsigned** (Cloudinary → Settings → Upload).
+- Endpoint de upload: `POST https://api.cloudinary.com/v1_1/<cloud>/image/upload`
+- O app armazena a `secure_url` no AsyncStorage (ex.: avatar do perfil).
+
+---
+
+## 8) Dicas & Troubleshooting
+
+- **Nada aparece em Vehicles**
+  - Verifique o endpoint no navegador (MockAPI):  
+    `https://68d042fcec1a5ff33826e3bd.mockapi.io/api/v1/motos`
+  - Cheque o **Base path** do projeto no MockAPI (deve ser `/api/v1` na Opção A).
+  - Veja no Metro se o app imprime o **API_URL** esperado.
+
+- **`.env` não carregou**
+  - Sempre iniciar com cache limpo: `npx expo start -c`
+
+- **Em rede corporativa/VPN**, libere acesso à MockAPI/Cloudinary.
+
+- **IDs do MockAPI são string**. A tela `VehiclesList` usa o **índice** para abrir `Moto1/2/3Screen` (3 telas fixas).
+
+---
+
+## 9) Scripts úteis
 ```json
 {
   "scripts": {
@@ -210,25 +251,13 @@ curl -s -X POST "https://68d042fcec1a5ff33826e3bd.mockapi.io/api/v1/motos"   -H 
 
 ---
 
-## ✅ Status da Sprint (resumo)
-- [x] Setup do projeto (Expo + TS)
-- [x] Autenticação + sessão persistente
-- [x] Telas base (Home, Vehicles, Profile, Settings)
-- [x] Build de preview via EAS
-- [ ] Integração IoT/telemetria (próximas sprints)
+## 10) Stack
+- Expo SDK 52 • React Native 0.76 • TypeScript 5
+- React Navigation • AsyncStorage
+- MockAPI • (opcional) JSON Server
+- Cloudinary (upload unsigned)
 
 ---
 
-## 📝 Notas
-- Se o `expo doctor` acusar assets ausentes (ex.: **splash**/**adaptive icon**), mantenha:
-  - `./assets/adaptive-icon.png`
-  - `./assets/splash.png`
-- Se `@expo/vector-icons` estiver no projeto, instale o peer:
-  ```bash
-  npx expo install expo-font
-  ```
-
----
-
-## 📄 Licença
+## 11) Licença
 Projeto acadêmico — uso educacional.
