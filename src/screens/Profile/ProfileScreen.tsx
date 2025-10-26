@@ -1,5 +1,6 @@
+// src/screens/Profile/ProfileScreen.tsx
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,6 +13,7 @@ const ProfileScreen = ({ navigation }: any) => {
   const [storedGender, setStoredGender] = useState('');
   const [storedBirthday, setStoredBirthday] = useState('');
   const [storedEmail, setStoredEmail] = useState('');
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -19,18 +21,19 @@ const ProfileScreen = ({ navigation }: any) => {
       const gender = await AsyncStorage.getItem('profile_gender');
       const birthday = await AsyncStorage.getItem('profile_birthdate');
       const email = await AsyncStorage.getItem('profile_email');
+      const photo = await AsyncStorage.getItem('profile_photo_url');
 
       if (phone) setStoredPhone(phone);
       if (gender) setStoredGender(gender);
       if (birthday) {
         const date = new Date(birthday);
-        // const formatted = ${String(date.getDate()).padStart(2, '0')}/ + ${String(date.getMonth() + 1).padStart(2, '0')}/ + ${date.getFullYear()};
         const formatted = `${String(date.getDate()).padStart(2, '0')}/${String(
           date.getMonth() + 1
-        ).padStart(2, '0')}/${date.getFullYear()}`; // ✅ corrigido mantendo a original comentada
+        ).padStart(2, '0')}/${date.getFullYear()}`;
         setStoredBirthday(formatted);
       }
       if (email) setStoredEmail(email);
+      if (photo) setPhotoUrl(photo);
     };
 
     const unsubscribe = navigation.addListener('focus', loadData);
@@ -44,7 +47,14 @@ const ProfileScreen = ({ navigation }: any) => {
       </View>
 
       <View style={styles.avatarWrapper}>
-        <Image source={require('../../../assets/icon.png')} style={styles.avatar} />
+        <Image
+          source={
+            photoUrl
+              ? { uri: photoUrl }
+              : require('../../../assets/icon.png')
+          }
+          style={styles.avatar}
+        />
         <TouchableOpacity
           style={styles.editIcon}
           onPress={() => navigation.navigate('ChangePhotoScreen')}

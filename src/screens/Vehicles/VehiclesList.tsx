@@ -1,17 +1,19 @@
+// src/screens/Vehicles/VehiclesList.tsx
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, StyleSheet, SafeAreaView, ActivityIndicator, Alert } from 'react-native';
 import MotoCard from '../../components/MotoCard';
 import { useNavigation } from '@react-navigation/native';
-import { getMotos } from '../../services/api';
+import { motosService, MotoDTO } from '../../services/motos.service';
 
 const VehiclesList = () => {
   const navigation = useNavigation<any>();
-  const [motos, setMotos] = useState<any[]>([]);
+  const [motos, setMotos] = useState<MotoDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getMotos()
-      .then((data) => setMotos(data))
+    motosService
+      .list()
+      .then((data) => setMotos(Array.isArray(data) ? data : []))
       .catch((e) => Alert.alert('Erro ao carregar motos', e?.message || ''))
       .finally(() => setLoading(false));
   }, []);
@@ -29,24 +31,40 @@ const VehiclesList = () => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Veículos</Text>
       </View>
+
       <View style={styles.container}>
         <Text style={styles.title}>Veículos Disponíveis</Text>
+
         <FlatList
           data={motos}
           keyExtractor={(item) => String(item.id)}
           contentContainerStyle={{ paddingBottom: 20 }}
-          renderItem={({ item }) => (
-            <MotoCard
-              modelo={item.modelo}
-              status={item.status}
-              user={item.user}
-              // Se sua API não retorna imagem, usa um placeholder local:
-              image={require('../../../assets/Moto1.png')}
-              // id numérico 1/2/3 -> "Moto1Screen", "Moto2Screen", ...
-              onPress={() => navigation.navigate(`Moto${item.id}Screen`)}
-            />
-          )}
-          ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 16 }}>Nenhum veículo encontrado.</Text>}
+          renderItem={({ item, index }) => {
+            // alguns registros seus usam "placa"; faz fallback:
+            const titulo =
+              (item.modelo && item.modelo.trim()) ||
+              (item as any).placa ||
+              '-';
+
+            return (
+              <MotoCard
+                modelo={titulo}
+                status={item.status || '-'}
+                user={item.user || ''}
+                image={require('../../../assets/Moto1.png')}
+                // você tem 3 telas fixas (Moto1/2/3). Usa o índice.
+                onPress={() => {
+                  const screen = `Moto${index + 1}Screen`;
+                  if (index < 3) navigation.navigate(screen as never);
+                }}
+              />
+            );
+          }}
+          ListEmptyComponent={
+            <Text style={{ textAlign: 'center', marginTop: 16 }}>
+              Nenhum veículo encontrado.
+            </Text>
+          }
         />
       </View>
     </SafeAreaView>

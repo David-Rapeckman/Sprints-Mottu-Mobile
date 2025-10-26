@@ -1,20 +1,66 @@
-import React from 'react';
-import { View, Text, Image, Button, StyleSheet, Alert } from 'react-native';
+// src/screens/Profile/ChangePhotoScreen.tsx
+import React, { useState } from 'react';
+import { View, Text, Image, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { uploadToCloudinary } from '../../services/cloudinary';
 
 const ChangePhotoScreen = ({ navigation }: any) => {
-  const handleSelectGallery = () => {
-    // alert('Selecionar da galeria (não implementado)');
-    Alert.alert('Selecionar da galeria (não implementado)'); // linha corrigida mantendo a original comentada
+  const [localUri, setLocalUri] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permissão negada', 'Precisamos da permissão para acessar sua galeria.');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 0.8,
+    });
+
+    if (!result.canceled) {
+      setLocalUri(result.assets[0].uri);
+    }
   };
 
-  const handleTakePhoto = () => {
-    // alert('Abrir câmera (não implementado)');
-    Alert.alert('Abrir câmera (não implementado)'); // linha corrigida mantendo a original comentada
+  const takePhoto = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permissão negada', 'Precisamos da permissão para usar a câmera.');
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      quality: 0.8,
+    });
+
+    if (!result.canceled) {
+      setLocalUri(result.assets[0].uri);
+    }
   };
 
-  const handleSave = () => {
-    Alert.alert('Foto Atualizada', 'A imagem foi alterada (simulada).');
-    navigation.navigate('ProfileScreen');
+  const handleSave = async () => {
+    if (!localUri) {
+      Alert.alert('Ops!', 'Selecione ou tire uma foto primeiro.');
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const url = await uploadToCloudinary(localUri);
+      await AsyncStorage.setItem('profile_photo_url', url);
+      Alert.alert('Sucesso', 'Foto atualizada!');
+      navigation.navigate('ProfileScreen');
+    } catch (e: any) {
+      Alert.alert('Erro no upload', e?.message || 'Tente novamente.');
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -23,12 +69,25 @@ const ChangePhotoScreen = ({ navigation }: any) => {
         <Text style={styles.headerText}>Change Photo</Text>
       </View>
 
-      <Image source={require('../../../assets/icon.png')} style={styles.image} />
+      <Image
+        source={
+          localUri
+            ? { uri: localUri }
+            : require('../../../assets/icon.png')
+        }
+        style={styles.image}
+      />
 
       <View style={styles.buttons}>
-        <Button title="Selecionar da Galeria" onPress={handleSelectGallery} />
-        <Button title="Tirar Foto Agora" onPress={handleTakePhoto} />
-        <Button title="Salvar e Voltar" onPress={handleSave} />
+        {uploading ? (
+          <ActivityIndicator size="large" color="#54B12C" />
+        ) : (
+          <>
+            <Button title="Selecionar da Galeria" onPress={pickImage} />
+            <Button title="Tirar Foto Agora" onPress={takePhoto} />
+            <Button title="Salvar e Voltar" onPress={handleSave} />
+          </>
+        )}
       </View>
     </View>
   );
