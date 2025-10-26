@@ -107,7 +107,7 @@ EXPO_PUBLIC_CLOUDINARY_PRESET=perfil_unsigned
 ### 3) Instalação e execução
 ```bash
 npm install
-npx expo doctor --fix-dependencies
+npx expo doctor 
 npx expo start --clear
 ```
 Abra o **Expo DevTools** e escaneie o QR code com o **Expo Go** (ou rode no emulador Android/iOS).
@@ -140,7 +140,7 @@ curl -s -X POST "https://68d042fcec1a5ff33826e3bd.mockapi.io/api/v1/motos"   -H 
 
 ### 6) Dicas e solução de problemas
 - Se o app não reconhecer o `.env`, rode com **cache limpo**: `npx expo start --clear`
-- Se aparecer alerta de versões, rode: `npx expo doctor --fix-dependencies`
+- Se aparecer alerta de versões, rode: `npx expo doctor`
 - Em redes corporativas, verifique **VPN/proxy** (a MockAPI precisa estar acessível do celular).
 
 ---
