@@ -3,6 +3,7 @@
 
 > App mobile (Expo/React Native) para **mapeamento e monitoramento** de motos (POC). Este guia mostra como rodar tudo **com MockAPI (nuvem)** e, opcionalmente, **com JSON Server (local)**. Também inclui credenciais padrão e dicas de solução de problemas.
 
+** Hash do commit final - 0f3dbe93081499476cf74f0cc220730be0654f7e
 ---
 
 
